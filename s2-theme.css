@@ -1,0 +1,131 @@
+/* =====================================================================
+ * AI NEXT Season 2 · "Cyber-Solar Glass" design system
+ * อิงจาก Key Visual ab-ai-next-01.jpg
+ * ===================================================================== */
+:root{
+  --bg-grad: radial-gradient(circle at 50% 18%, #FF9E44 0%, #FF7B1A 28%, #E04300 62%, #160702 100%);
+  --glass: rgba(255,255,255,.13);
+  --glass-hi: rgba(255,255,255,.20);
+  --glass-brd: rgba(255,255,255,.38);
+  --glass-dark: rgba(22,8,3,.42);
+  --obsidian: #110906;
+  --obsidian-2: #1d0f09;
+  --neon: #FF7A00;
+  --neon-hot: #FF6D00;
+  --neon-core: #FFF3D1;
+  --gold: #FFD166;
+  --ok: #38F29B;
+  --danger: #FF8A7A;
+  --text: #FFFFFF;
+  --muted: rgba(255,240,228,.86);
+  --cta-text: #1A0802;
+  --laser: linear-gradient(90deg, transparent 0%, #FF6D00 20%, #FFF3D1 50%, #FF6D00 80%, transparent 100%);
+  --metal: linear-gradient(180deg, #FFFFFF 0%, #FFF1E2 45%, #FFC48A 100%);
+  --radius: 20px;
+  --shadow: 0 12px 32px rgba(20,5,0,.24), inset 0 1px 1px rgba(255,255,255,.45);
+}
+*{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html,body{ min-height:100%; }
+body{
+  margin:0; color:var(--text); font-family:'IBM Plex Sans Thai',sans-serif;
+  background:var(--bg-grad); background-color:#E04300; background-attachment:fixed;
+  overflow-x:hidden;
+}
+a{ color:var(--gold); }
+
+/* ---------- Floating glass AI tiles (background decoration) ---------- */
+.s2-tiles{ position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden; }
+.s2-tiles::after{ /* soft circuit grid */
+  content:''; position:absolute; inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);
+  background-size:38px 38px; mask-image:radial-gradient(circle at 50% 30%, #000 0%, transparent 75%);
+  -webkit-mask-image:radial-gradient(circle at 50% 30%, #000 0%, transparent 75%);
+}
+.s2-tile{
+  position:absolute; padding:12px 20px; border-radius:16px;
+  background:rgba(255,255,255,.11); border:1px solid rgba(255,255,255,.30);
+  backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+  font-family:'Chakra Petch',sans-serif; font-weight:600; font-size:clamp(14px,2.2vw,26px);
+  color:rgba(255,255,255,.55); letter-spacing:.02em; white-space:nowrap;
+  box-shadow:0 10px 30px rgba(0,0,0,.10), inset 0 1px 0 rgba(255,255,255,.35);
+  animation:s2-tile 9s ease-in-out infinite; --r:-6deg;
+}
+.s2-tile.code{ padding:10px 14px; font-size:clamp(14px,2vw,22px); }
+.s2-tile.t1{ top:6%;  left:-24px; --r:-7deg; }
+.s2-tile.t2{ top:24%; left:-30px; --r:4deg;  animation-delay:-2s; }
+.s2-tile.t3{ top:50%; left:-34px; --r:-3deg; animation-delay:-4s; }
+.s2-tile.t4{ top:74%; left:-26px; --r:5deg;  animation-delay:-6s; }
+.s2-tile.t5{ top:9%;  right:-10px; --r:8deg; animation-delay:-1s; }
+.s2-tile.t6{ top:60%; right:-14px; --r:-6deg; animation-delay:-3s; }
+.s2-tile.t7{ top:34%; right:-30px; --r:-4deg; animation-delay:-5s; }
+@keyframes s2-tile{ 0%,100%{ transform:translateY(0) rotate(var(--r)); } 50%{ transform:translateY(-14px) rotate(calc(var(--r) * -0.6)); } }
+
+/* ---------- Typography ---------- */
+.s2-metal{
+  font-family:'Chakra Petch',sans-serif; font-weight:700; text-transform:uppercase; letter-spacing:.04em;
+  background:var(--metal); -webkit-background-clip:text; background-clip:text; color:transparent;
+  filter:drop-shadow(0 2px 10px rgba(255,110,0,.55));
+}
+.s2-kicker{
+  display:flex; align-items:center; gap:8px; font-family:'Chakra Petch'; font-weight:700; font-size:11px;
+  letter-spacing:.28em; color:var(--gold); text-transform:uppercase;
+}
+.s2-kicker .bar{ width:22px; height:2px; background:var(--laser); box-shadow:0 0 8px var(--neon); }
+
+/* ---------- Surfaces ---------- */
+.glass{
+  background:var(--glass); border:1px solid var(--glass-brd);
+  backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px);
+  border-radius:var(--radius); box-shadow:var(--shadow);
+}
+.obsidian{
+  position:relative; overflow:hidden; border-radius:22px;
+  background:linear-gradient(150deg, rgba(34,16,9,.94), rgba(17,9,6,.97) 55%, rgba(10,4,2,.98));
+  border:1px solid rgba(255,145,50,.55);
+  box-shadow:0 16px 40px rgba(0,0,0,.45), 0 0 26px rgba(255,106,0,.25), inset 0 1px 0 rgba(255,255,255,.12);
+}
+.obsidian::before{ /* glossy visor reflection */
+  content:''; position:absolute; left:-20%; top:-60%; width:140%; height:90%; pointer-events:none;
+  background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,0));
+  transform:rotate(-6deg);
+}
+.laser{
+  height:3px; width:100%; border-radius:99px; background:var(--laser);
+  box-shadow:0 0 14px #FF7A00, 0 0 28px rgba(255,85,0,.6);
+}
+
+/* ---------- Buttons ---------- */
+.btn-cta{
+  display:inline-flex; align-items:center; justify-content:center; gap:9px; width:100%;
+  padding:16px 20px; border:none; border-radius:15px; cursor:pointer;
+  background:linear-gradient(90deg,#FFFFFF 0%,#FFE4C4 100%); color:var(--cta-text);
+  font-family:'Chakra Petch'; font-weight:700; font-size:15.5px; letter-spacing:.04em;
+  box-shadow:0 10px 28px rgba(0,0,0,.30), 0 0 22px rgba(255,200,120,.45);
+  transition:transform .15s ease, box-shadow .15s ease;
+}
+.btn-cta:hover{ transform:translateY(-2px); }
+.btn-cta:active{ transform:scale(.97); }
+.btn-cta:disabled{ opacity:.5; cursor:not-allowed; transform:none; }
+.btn-ghost{
+  width:100%; padding:14px; border-radius:14px; cursor:pointer;
+  background:rgba(255,255,255,.08); border:1px solid var(--glass-brd); color:var(--text);
+  font-family:'Chakra Petch'; font-weight:600; font-size:14px;
+  backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+}
+.btn-line{
+  display:inline-flex; align-items:center; justify-content:center; gap:9px; width:100%;
+  padding:15px 20px; border:none; border-radius:15px; cursor:pointer; text-decoration:none;
+  background:#06C755; color:#fff; font-family:'Chakra Petch'; font-weight:700; font-size:15px;
+  box-shadow:0 10px 26px rgba(6,199,85,.35);
+}
+
+/* ---------- Form fields ---------- */
+.field{
+  width:100%; padding:15px 17px; border-radius:14px; outline:none;
+  background:rgba(17,9,6,.45); border:1px solid var(--glass-brd); color:var(--text);
+  font-family:'IBM Plex Sans Thai'; font-size:16px;
+}
+.field::placeholder{ color:rgba(255,240,228,.55); }
+.field:focus{ border-color:#fff; box-shadow:0 0 0 3px rgba(255,255,255,.18), 0 0 18px rgba(255,122,0,.4); }
+
+@media (prefers-reduced-motion:reduce){ *{ animation:none!important; transition:none!important; } }

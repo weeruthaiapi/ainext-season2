@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI NEXT Season 2 — Admin Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Sans+Thai:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="s2-theme.css">
+<style>
+  :root{ --card:rgba(17,9,6,.5); --card2:rgba(17,9,6,.4); --brd:rgba(255,255,255,.2); --green:#38F29B; --greenbg:rgba(56,242,155,.15);
+    --red:#FFB0A2; --redbg:rgba(255,120,80,.2); --goldbg:rgba(255,209,102,.16); }
+  .wrap{ position:relative; z-index:2; max-width:1320px; margin:0 auto; padding:20px 20px 60px; }
+  .head{ display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:18px; padding:12px 18px; }
+  .head .brand{ display:flex; align-items:center; gap:14px; }
+  .head img{ height:44px; }
+  .head .title{ font-family:'Chakra Petch'; font-weight:700; letter-spacing:.14em; font-size:14px; text-transform:uppercase; }
+  .head .title span{ color:var(--gold); }
+  .head .live{ font-size:12.5px; color:var(--muted); display:flex; align-items:center; gap:8px; }
+  .dot{ width:8px; height:8px; border-radius:50%; background:var(--green); animation:pulse 1.6s infinite; }
+  @keyframes pulse{ 0%{ box-shadow:0 0 0 0 rgba(56,242,155,.5); } 70%{ box-shadow:0 0 0 9px rgba(56,242,155,0); } 100%{ box-shadow:0 0 0 0 rgba(56,242,155,0); } }
+  .tabs{ display:flex; gap:8px; margin-bottom:18px; flex-wrap:wrap; align-items:center; }
+  .tabs button{ font-family:'Chakra Petch'; font-weight:600; font-size:13px; border:1px solid var(--brd); background:var(--card); color:var(--muted); padding:10px 16px; border-radius:12px; cursor:pointer; }
+  .tabs button.on{ background:#fff; color:var(--cta-text); border-color:#fff; }
+  .tabs .sp{ flex:1; }
+  .csv{ font-family:'Chakra Petch'; font-weight:700; font-size:13px; border:1px solid rgba(255,209,102,.6)!important; background:rgba(17,9,6,.6)!important; color:var(--gold)!important; }
+  .cards{ display:grid; grid-template-columns:repeat(6,1fr); gap:12px; margin-bottom:18px; }
+  @media (max-width:1100px){ .cards{ grid-template-columns:repeat(3,1fr);} }
+  @media (max-width:640px){ .cards{ grid-template-columns:repeat(2,1fr);} }
+  .card{ padding:16px 18px; border-radius:18px; }
+  .card .k{ font-size:13.5px; color:var(--muted); margin-bottom:8px; }
+  .card .v{ font-family:'Chakra Petch'; font-weight:700; font-size:34px; line-height:1; }
+  .card .v small{ font-size:15px; color:var(--muted); font-weight:600; margin-left:6px; }
+  .sub{ color:var(--muted); font-size:11.5px; }
+  .row2{ display:grid; grid-template-columns:1fr auto; gap:12px; margin-bottom:18px; align-items:stretch; }
+  @media (max-width:980px){ .row2{ grid-template-columns:1fr; } }
+  .switches{ display:flex; flex-wrap:wrap; gap:10px; }
+  .sw{ display:flex; align-items:center; gap:10px; background:var(--card); border:1px solid var(--brd); border-radius:14px; padding:10px 14px; }
+  .sw .lbl{ font-family:'Chakra Petch'; font-weight:600; font-size:14.5px; }
+  .toggle{ width:50px; height:28px; border-radius:99px; background:rgba(255,255,255,.2); position:relative; cursor:pointer; transition:background .2s; flex-shrink:0; }
+  .toggle i{ position:absolute; top:3px; left:3px; width:22px; height:22px; border-radius:50%; background:#fff; transition:left .2s; }
+  .toggle.on{ background:var(--green); } .toggle.on i{ left:25px; }
+  .wallctl{ padding:10px 14px; border-radius:16px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .wallctl .lbl{ font-family:'Chakra Petch'; font-weight:700; font-size:12px; letter-spacing:.16em; color:var(--gold); }
+  .seg{ display:flex; background:var(--card2); border:1px solid var(--brd); border-radius:12px; padding:3px; }
+  .seg button{ font-family:'Chakra Petch'; font-weight:600; font-size:12.5px; border:none; background:none; color:var(--muted); padding:8px 12px; border-radius:9px; cursor:pointer; }
+  .seg button.on{ background:var(--obsidian); color:#fff; box-shadow:0 0 12px rgba(255,122,0,.5), inset 0 -2px 0 #FF7A00; }
+  .wallctl a{ color:var(--muted); font-size:12px; }
+  .panel{ border-radius:18px; padding:6px 2px; overflow:hidden; }
+  .toolbar{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; padding:12px 16px; }
+  .toolbar input, .toolbar select{ background:var(--card2); border:1px solid var(--brd); color:#fff; border-radius:10px; padding:10px 12px; font-family:inherit; font-size:13.5px; outline:none; }
+  .toolbar select option{ color:#111; }
+  .toolbar input{ flex:1; min-width:180px; }
+  table{ width:100%; border-collapse:collapse; font-size:14.5px; }
+  th,td{ text-align:left; padding:12px 14px; border-bottom:1px solid rgba(255,255,255,.12); white-space:nowrap; }
+  th{ color:var(--gold); font-family:'Chakra Petch'; font-weight:600; font-size:12.5px; letter-spacing:.06em; text-transform:uppercase; cursor:pointer; user-select:none; background:rgba(17,9,6,.35); }
+  tbody tr:hover{ background:rgba(255,255,255,.05); }
+  td.name{ font-weight:600; }
+  .pill{ display:inline-flex; align-items:center; gap:5px; padding:4px 10px; border-radius:99px; font-family:'Chakra Petch'; font-weight:600; font-size:12.5px; }
+  .p-green{ background:var(--greenbg); color:var(--green); } .p-red{ background:var(--redbg); color:var(--red); }
+  .p-gold{ background:var(--goldbg); color:var(--gold); } .p-grey{ background:rgba(255,255,255,.06); color:var(--muted); }
+  .grp{ font-family:'Chakra Petch'; font-weight:700; font-size:12px; padding:3px 9px; border-radius:8px; }
+  .grp1{ background:rgba(96,165,250,.2); color:#bcd9ff; } .grp2{ background:rgba(244,114,182,.2); color:#ffc4e6; } .grp0{ color:var(--muted); }
+  .mini{ border:1px solid rgba(255,255,255,.35); background:transparent; color:#fff; border-radius:8px; padding:6px 10px; font-family:'Chakra Petch'; font-weight:600; font-size:12.5px; cursor:pointer; }
+  .mini.danger{ color:var(--red); border-color:rgba(255,160,140,.5); } .mini.on{ background:var(--red); color:#200; border-color:transparent; }
+  .mini.called{ background:var(--green); color:#062; border-color:transparent; }
+  .rank{ display:flex; align-items:center; justify-content:space-between; padding:12px 16px; border-bottom:1px solid rgba(255,255,255,.1); }
+  .rank .team{ font-family:'Chakra Petch'; font-weight:600; min-width:110px; }
+  .rank .barwrap{ flex:1; margin:0 16px; height:10px; background:var(--card2); border-radius:99px; overflow:hidden; }
+  .rank .barwrap i{ display:block; height:100%; background:linear-gradient(90deg,#FF6D00,#FFD166); box-shadow:0 0 10px #FF7A00; transition:width .6s; }
+  .rank .num{ font-family:'Chakra Petch'; font-weight:700; min-width:34px; text-align:right; }
+  .two{ display:grid; grid-template-columns:1fr 1fr; gap:16px; } @media (max-width:860px){ .two{ grid-template-columns:1fr; } }
+  h3.sec{ font-family:'Chakra Petch'; font-weight:700; font-size:14px; margin:0; padding:14px 16px 8px; letter-spacing:.06em; }
+  .login{ max-width:380px; margin:12vh auto 0; padding:30px 26px; position:relative; z-index:2; }
+  .login img{ height:56px; display:block; margin:0 auto 6px; }
+  .login h2{ font-family:'Chakra Petch'; margin:6px 0 4px; text-align:center; }
+  .login .laser{ margin:12px 0 18px; }
+  .login input{ margin-bottom:12px; }
+  .err{ background:var(--redbg); color:var(--red); border-radius:10px; padding:10px 12px; font-size:13px; margin-bottom:12px; }
+  .empty{ text-align:center; color:var(--muted); padding:26px; font-size:13.5px; }
+  .scroll{ overflow-x:auto; }
+  .toast{ position:fixed; bottom:20px; left:50%; transform:translateX(-50%); z-index:50; padding:10px 18px; border-radius:12px; background:rgba(17,9,6,.92); border:1px solid rgba(255,165,70,.6); font-size:13.5px; display:none; }
+  .toast.on{ display:block; animation:rise .3s ease; } @keyframes rise{ from{ opacity:0; transform:translate(-50%,10px); } }
+</style>
+</head>
+<body>
+<div class="s2-tiles" aria-hidden="true"><div class="s2-tile t1">ChatGPT</div><div class="s2-tile t3">Manus</div><div class="s2-tile code t5">&lt;/&gt;</div><div class="s2-tile t6">Claude</div></div>
+<div id="app"></div>
+<div class="toast" id="toast"></div>
+
+<script src="config.js"></script>
+<script src="api.js"></script>
+<script>
+const C = window.AINEXT_CONFIG, { callApi, esc, jitterInterval, downloadCSV } = window.AINEXT;
+const app = document.getElementById('app');
+let PASSWORD = null, TAB = 'overview', stopPoll = null, renderId = 0;
+let listCache = [], sortKey = 'runNo', sortDir = 1, filterText = '', filterMode = 'all';
+let votesCache = null, resultsCache = null, certCache = [], resultTab = 'm1';
+function clearPoll(){ if (stopPoll) { stopPoll(); stopPoll = null; } }
+/* poll ด้วย jitter 8–10 วินาที (ADMIN_POLL_MS + สุ่ม 0–2000ms) ลดการชนกันของหลายเครื่อง */
+function poll(fn){ clearPoll(); stopPoll = jitterInterval(fn, C.ADMIN_POLL_MS, 2000); }
+function toast(msg){ const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('on'); clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('on'), 2600); }
+const stamp = () => { const d = new Date(), p = n => String(n).padStart(2, '0'); return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}-${p(d.getHours())}${p(d.getMinutes())}`; };
+const yn = b => b ? 'TRUE' : 'FALSE';
+
+/* ================= LOGIN ================= */
+function screenLogin(err){
+  clearPoll();
+  app.innerHTML = `<div class="login glass"><img src="${C.LOGO}" alt="AI NEXT"><h2>Admin · ${esc(C.SEASON_LABEL)}</h2><div class="laser"></div>
+    ${err ? `<div class="err">${esc(err)}</div>` : ''}
+    <input class="field" type="password" id="pw" placeholder="Admin password" autofocus>
+    <button class="btn-cta" id="loginBtn">เข้าสู่ระบบ</button>
+    ${C.DEMO_MODE ? '<p class="sub" style="text-align:center;margin-top:12px">DEMO MODE · รหัสทดลอง: ainext2026</p>' : ''}
+    <p style="text-align:center;margin-top:12px"><a href="index.html" style="color:var(--muted);font-size:12px;text-decoration:none">← กลับหน้าลงทะเบียน</a></p></div>`;
+  document.getElementById('loginBtn').onclick = doLogin;
+  document.getElementById('pw').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+}
+async function doLogin(){
+  const pw = document.getElementById('pw').value; const r = await callApi('adminLogin', { password: pw });
+  if (!r.success) { screenLogin(r.reason === 'network' ? 'เชื่อมต่อ API ไม่ได้ — ตรวจ API_BASE_URL ใน config.js' : 'รหัสผ่านไม่ถูกต้อง'); return; }
+  PASSWORD = pw; TAB = 'overview'; render();
+}
+
+/* ================= SHELL ================= */
+const TABS = [['overview', 'ภาพรวม'], ['votes', 'ผลโหวต'], ['results', 'คำตอบ Mission'], ['certified', 'ผู้ได้รับ Cert']];
+function shell(body){
+  app.innerHTML = `<div class="wrap">
+    <div class="head glass">
+      <div class="brand"><img src="${C.LOGO}" alt=""><div class="title">AI NEXT <span>${esc(C.SEASON_LABEL)}</span> · Admin Dashboard</div></div>
+      <div class="live"><span class="dot"></span><span id="liveTxt">อัปเดตอัตโนมัติทุก ~8–10 วินาที</span>${C.DEMO_MODE ? ' · <b style="color:var(--gold)">DEMO</b>' : ''}</div>
+    </div>
+    <div class="tabs">
+      ${TABS.map(t => `<button data-tab="${t[0]}" class="${TAB === t[0] ? 'on' : ''}">${t[1]}</button>`).join('')}
+      <span class="sp"></span>
+      <button class="csv" id="csvBtn">📥 Export All Data (CSV)</button>
+    </div>
+    <div id="body">${body}</div>
+  </div>`;
+  document.querySelectorAll('[data-tab]').forEach(b => b.onclick = () => { TAB = b.dataset.tab; render(); });
+  document.getElementById('csvBtn').onclick = exportCSV;
+}
+function liveTick(){ const el = document.getElementById('liveTxt'); if (el) el.textContent = 'อัปเดตล่าสุด ' + new Date().toLocaleTimeString('th-TH'); }
+async function render(){
+  clearPoll();
+  if (TAB === 'overview') return renderOverview();
+  if (TAB === 'votes') return renderVotes();
+  if (TAB === 'results') return renderResults();
+  if (TAB === 'certified') return renderCertified();
+}
+
+/* ================= CSV EXPORT (ต่อแท็บ) ================= */
+async function exportCSV(){
+  if (TAB === 'overview') {
+    const r = await callApi('adminList', { password: PASSWORD, query: '' }); if (!r.success) return toast('ดึงข้อมูลไม่สำเร็จ');
+    downloadCSV(`ainext-s2-participants-${stamp()}.csv`,
+      ['No', 'Run No', 'ชื่อ-นามสกุล', 'ชื่อเล่น', 'ทีม', 'Group', 'เบอร์', 'เมนู', 'Checked-in', 'OpenChat', 'M1', 'M2', 'M3', 'Cert', 'Vote', 'Cannot Attend', 'Called', 'Tester'],
+      r.items.map(p => [p.attendeeId, p.runNo, p.name, p.nick, p.team, p.group || '', p.phone, p.menu || '', yn(p.checkin), yn(p.openchat), yn(p.m1), yn(p.m2), yn(p.m3), yn(p.cert), p.vote, yn(p.cannotAttend), yn(p.called), yn(p.isTest)]));
+  } else if (TAB === 'votes') {
+    const r = votesCache || await callApi('adminVotes', { password: PASSWORD }); if (!r.success) return toast('ดึงข้อมูลไม่สำเร็จ');
+    const rows = []; [['1', r.group1 || []], ['2', r.group2 || []]].forEach(([g, list]) => list.forEach((x, i) => rows.push([g, i + 1, x.team, x.votes])));
+    downloadCSV(`ainext-s2-votes-${stamp()}.csv`, ['Group', 'อันดับ', 'ทีม', 'คะแนนโหวต'], rows);
+  } else if (TAB === 'results') {
+    const r = await callApi('adminResults', { password: PASSWORD }); if (!r.success) return toast('ดึงข้อมูลไม่สำเร็จ');
+    ['m1', 'm2', 'm3'].forEach((k, i) => { const d = r[k] || { headers: [], rows: [] }; setTimeout(() => downloadCSV(`ainext-s2-${k}-answers-${stamp()}.csv`, d.headers, d.rows), i * 400); });
+    toast('ดาวน์โหลด 3 ไฟล์: Mission 1, 2, 3');
+    return;
+  } else if (TAB === 'certified') {
+    const r = await callApi('adminCertified', { password: PASSWORD }); if (!r.success) return toast('ดึงข้อมูลไม่สำเร็จ');
+    downloadCSV(`ainext-s2-certified-${stamp()}.csv`, ['No', 'Run No', 'ชื่อ-นามสกุล', 'ชื่อเล่น', 'ทีม', 'Group'], r.items.map(p => [p.attendeeId, p.runNo, p.name, p.nick, p.team, p.group]));
+  }
+  toast('ดาวน์โหลด CSV แล้ว');
+}
+
+/* ================= OVERVIEW ================= */
+const STAGES = [['checkin', 'เช็คอิน'], ['m1', 'Mission 1'], ['m2', 'Mission 2'], ['m3', 'Mission 3'], ['cert', 'Certificate']];
+const OPENKEY = { checkin: 'checkin_open', m1: 'mission1_open', m2: 'mission2_open', m3: 'mission3_open', cert: 'cert_open' };
+const WALL = [['checkin', '1 · Check-in'], ['missions', '2 · Missions'], ['votes', '3 · Vote']];
+async function renderOverview(){
+  const myId = ++renderId;
+  const r = await callApi('adminStats', { password: PASSWORD });
+  if (myId !== renderId) return;
+  if (!r.success) { screenLogin(r.reason === 'bad_password' ? 'เซสชันหมดอายุ' : 'เชื่อมต่อไม่ได้ ลองใหม่'); return; }
+  shell(`<div class="cards" id="cards">${cardsHtml(r.stats)}</div>
+    <div class="row2">
+      <div class="switches" id="switches">${switchesHtml(r.stats)}</div>
+      <div class="wallctl glass"><span class="lbl">LIVE WALL</span><div class="seg" id="wallSeg">${WALL.map(w => `<button data-wall="${w[0]}" class="${r.stats.wall_mode === w[0] ? 'on' : ''}">${w[1]}</button>`).join('')}</div><a href="wall.html" target="_blank">เปิดจอ ↗</a></div>
+    </div>
+    <div class="panel glass">
+      <div class="toolbar">
+        <input id="q" placeholder="ค้นหา ชื่อ / ชื่อเล่น / เลข / ทีม / เบอร์" value="${esc(filterText)}">
+        <select id="fmode"><option value="all">ทั้งหมด</option><option value="checkin">เช็คอินแล้ว</option><option value="nocheckin">ยังไม่เช็คอิน</option><option value="cert">ได้ Cert</option><option value="cannot">มาไม่ได้ (checked-out)</option><option value="test">ผู้ทดสอบ</option></select>
+      </div>
+      <div class="scroll"><table id="statusTable"></table></div>
+    </div>`);
+  bindSwitches();
+  document.querySelectorAll('[data-wall]').forEach(b => b.onclick = async () => {
+    document.querySelectorAll('[data-wall]').forEach(x => x.classList.toggle('on', x === b));
+    const res = await callApi('adminSetWallMode', { password: PASSWORD, mode: b.dataset.wall });
+    toast(res.success ? 'Live Wall → ' + b.textContent : 'เปลี่ยนโหมดไม่สำเร็จ');
+  });
+  const qEl = document.getElementById('q'), fEl = document.getElementById('fmode'); fEl.value = filterMode;
+  qEl.oninput = () => { filterText = qEl.value; drawTable(); };
+  fEl.onchange = () => { filterMode = fEl.value; drawTable(); };
+  await loadList(); if (myId !== renderId) return; drawTable();
+  poll(async () => {
+    if (myId !== renderId) return;
+    const [s] = await Promise.all([callApi('adminStats', { password: PASSWORD }), loadList()]);
+    if (myId !== renderId) return;
+    if (s.success) { document.getElementById('cards').innerHTML = cardsHtml(s.stats); document.getElementById('switches').innerHTML = switchesHtml(s.stats); bindSwitches();
+      document.querySelectorAll('[data-wall]').forEach(x => x.classList.toggle('on', x.dataset.wall === s.stats.wall_mode)); }
+    drawTable(); liveTick();
+  });
+}
+function cardsHtml(s){
+  function missionCard(label, count, openFlag){
+    let big, note;
+    if (!openFlag && count === 0) { big = '—'; note = 'ยังไม่เปิด'; }
+    else { big = count + ' <small>/ ' + s.total + '</small>'; const miss = s.checkin - count; note = miss > 0 ? ('ขาด ' + miss + ' คน') : 'ครบแล้ว'; }
+    return `<div class="card glass"><div class="k">${label}</div><div class="v">${big}</div><div class="sub" style="margin-top:8px">${note}</div></div>`;
+  }
+  return `<div class="card glass"><div class="k">เช็คอินแล้ว</div><div class="v">${s.checkin} <small>/ ${s.total}</small></div><div class="sub" style="margin-top:8px">Check-out ${s.cannotAttend} คน</div></div>
+    <div class="card glass"><div class="k">เข้า OpenChat</div><div class="v">${s.openchat} <small>/ ${s.total}</small></div><div class="sub" style="margin-top:8px">โหวตแล้ว ${s.votes} คน</div></div>
+    ${missionCard('Mission 1', s.m1, s.mission1_open)}${missionCard('Mission 2', s.m2, s.mission2_open)}${missionCard('Mission 3', s.m3, s.mission3_open)}
+    <div class="card glass"><div class="k">ได้ Cert</div><div class="v">${s.cert} <small>/ ${s.total}</small></div><div class="sub" style="margin-top:8px">${s.cert_open ? 'ปล่อยแล้ว' : 'รอปล่อย'}</div></div>`;
+}
+function switchesHtml(s){
+  return STAGES.map(st => { const on = s[OPENKEY[st[0]]];
+    return `<div class="sw"><div class="toggle ${on ? 'on' : ''}" data-key="${st[0]}" data-open="${on ? 0 : 1}"><i></i></div><div class="lbl">${st[1]} ${on ? 'เปิดอยู่' : 'ปิดอยู่'}</div></div>`; }).join('');
+}
+function bindSwitches(){
+  document.querySelectorAll('.toggle').forEach(t => t.onclick = async () => {
+    const open = t.dataset.open === '1', label = t.parentNode.querySelector('.lbl').textContent.split(' ')[0];
+    if (t.dataset.key === 'cert' && open && !confirm('ปล่อย E-Certificate ให้ทุกคนที่ทำครบ 3 Mission?')) return;
+    t.classList.toggle('on', open);
+    const r = await callApi('adminSetOpen', { password: PASSWORD, key: t.dataset.key, open });
+    if (!r.success) { toast('บันทึกไม่สำเร็จ ลองใหม่'); renderOverview(); return; }
+    toast(`${label} ${open ? 'เปิดแล้ว ✅' : 'ปิดแล้ว'}`);
+    document.getElementById('cards').innerHTML = cardsHtml(r.stats); document.getElementById('switches').innerHTML = switchesHtml(r.stats); bindSwitches();
+  });
+}
+async function loadList(){ const r = await callApi('adminList', { password: PASSWORD, query: '' }); if (r.success) listCache = r.items; }
+const pill = ok => ok ? `<span class="pill p-green">✓</span>` : `<span class="pill p-grey">–</span>`;
+function drawTable(){
+  const tb = document.getElementById('statusTable'); if (!tb) return;
+  let rows = listCache.slice();
+  const q = filterText.trim().toLowerCase();
+  if (q) rows = rows.filter(p => (p.attendeeId + ' ' + p.runNo + ' ' + p.name + ' ' + p.nick + ' ' + p.team + ' ' + p.phone).toLowerCase().includes(q));
+  if (filterMode === 'checkin') rows = rows.filter(p => p.checkin);
+  else if (filterMode === 'nocheckin') rows = rows.filter(p => !p.checkin && !p.cannotAttend && !p.isTest);
+  else if (filterMode === 'cert') rows = rows.filter(p => p.cert);
+  else if (filterMode === 'cannot') rows = rows.filter(p => p.cannotAttend);
+  else if (filterMode === 'test') rows = rows.filter(p => p.isTest);
+  else rows = rows.filter(p => !p.isTest);
+  rows.sort((a, b) => { let x = a[sortKey], y = b[sortKey]; if (typeof x === 'boolean') { x = x ? 1 : 0; y = y ? 1 : 0; } x = String(x); y = String(y); return x.localeCompare(y, 'th', { numeric: true }) * sortDir; });
+  const cols = [['runNo', '#'], ['nick', 'ชื่อเล่น / ชื่อ'], ['team', 'ทีม'], ['phone', 'เบอร์'], ['group', 'Group'], ['checkin', 'เช็คอิน'], ['m1', 'M1'], ['m2', 'M2'], ['m3', 'M3'], ['vote', 'โหวต'], ['cert', 'สิทธิ์ CERT'], ['called', 'โทรยืนยัน'], ['x', 'จัดการ']];
+  let h = '<thead><tr>' + cols.map(c => `<th data-sk="${c[0]}">${c[1]}${sortKey === c[0] ? (sortDir > 0 ? ' ▲' : ' ▼') : ''}</th>`).join('') + '</tr></thead><tbody>';
+  if (!rows.length) h += `<tr><td colspan="${cols.length}"><div class="empty">ไม่พบผู้เข้าร่วม</div></td></tr>`;
+  rows.forEach(p => {
+    const grp = p.group ? `<span class="grp grp${p.group}">G${p.group}</span>` : `<span class="grp grp0">–</span>`;
+    const ci = p.cannotAttend ? `<span class="pill p-red">ไม่มา</span>` : (p.checkin ? `<span class="pill p-green">เช็คอิน</span>` : `<span class="pill p-red">ยังไม่มา</span>`);
+    const cert = p.cert ? `<span class="pill p-green">ได้ Cert</span>` : (p.m1 && p.m2 && p.m3 ? `<span class="pill p-gold">รอปล่อย</span>` : `<span class="pill p-gold">รอ ${!p.m1 ? 'M1' : !p.m2 ? 'M2' : 'M3'}</span>`);
+    h += `<tr><td class="name">${esc(p.runNo || p.attendeeId)}</td>
+      <td><div class="name">${esc(p.nick)}${p.isTest ? ' <span class="sub">(TEST)</span>' : ''}</div><div class="sub">${esc(p.name)}</div></td>
+      <td>${esc(p.team || '—')}</td><td>${esc(p.phone || '—')}</td><td>${grp}</td><td>${ci}</td>
+      <td>${pill(p.m1)}</td><td>${pill(p.m2)}</td><td>${pill(p.m3)}</td><td>${p.vote ? esc(p.vote) : '<span class="sub">–</span>'}</td><td>${cert}</td>
+      <td><button class="mini ${p.called ? 'called' : ''}" data-called="${esc(p.attendeeId)}">${p.called ? '☎ โทรแล้ว' : '☎ ยังไม่โทร'}</button></td>
+      <td><button class="mini ${p.cannotAttend ? 'on' : 'danger'}" data-checkout="${esc(p.attendeeId)}">${p.cannotAttend ? 'ยกเลิก' : 'Check-out'}</button></td></tr>`;
+  });
+  tb.innerHTML = h + '</tbody>';
+  tb.querySelectorAll('th[data-sk]').forEach(th => th.onclick = () => { const k = th.dataset.sk; if (k === 'x') return; if (sortKey === k) sortDir = -sortDir; else { sortKey = k; sortDir = 1; } drawTable(); });
+  const patchBtn = (attr, field) => tb.querySelectorAll(`[data-${attr}]`).forEach(btn => btn.onclick = async () => {
+    const id = btn.dataset[attr], p = listCache.find(x => String(x.attendeeId) === String(id)), nv = !(p && p[field]);
+    if (field === 'cannotAttend' && nv && !confirm(`Check-out คุณ${p.nick}? (ไม่นับในยอด และเช็คอินไม่ได้)`)) return;
+    btn.disabled = true; await callApi('adminUpdateParticipant', { password: PASSWORD, attendeeId: id, patch: { [field]: nv } }); await loadList(); drawTable();
+  });
+  patchBtn('checkout', 'cannotAttend'); patchBtn('called', 'called');
+}
+
+/* ================= VOTES ================= */
+async function renderVotes(){
+  const myId = ++renderId;
+  shell(`<div class="two"><div class="panel glass"><h3 class="sec">🏅 Group 1 · อันดับโหวต</h3><div id="g1"></div></div>
+    <div class="panel glass"><h3 class="sec">🏅 Group 2 · อันดับโหวต</h3><div id="g2"></div></div></div>
+    <p class="sub" style="margin-top:12px">นับรวมโหวตของผู้ทดสอบด้วย — รัน cleanupTestData() ก่อนวันงานเพื่อล้าง</p>`);
+  function draw(list, el){
+    const box = document.getElementById(el); if (!box) return;
+    const max = Math.max(1, ...list.map(x => x.votes));
+    box.innerHTML = list.length ? list.map((x, i) => `<div class="rank"><span class="team">${i + 1}. ${esc(x.team)}${i === 0 && x.votes ? ' 👑' : ''}</span><span class="barwrap"><i style="width:${Math.round(x.votes / max * 100)}%"></i></span><span class="num">${x.votes}</span></div>`).join('') : '<div class="empty">ยังไม่มีทีมในกลุ่มนี้</div>';
+  }
+  async function pull(){ const r = await callApi('adminVotes', { password: PASSWORD }); if (myId !== renderId) return;
+    if (!r.success) { if (r.reason === 'bad_password') screenLogin('เซสชันหมดอายุ'); return; } votesCache = r; draw(r.group1 || [], 'g1'); draw(r.group2 || [], 'g2'); liveTick(); }
+  await pull(); poll(pull);
+}
+
+/* ================= RESULTS ================= */
+async function renderResults(){
+  const myId = ++renderId;
+  shell(`<div class="tabs" style="margin-bottom:14px">${[['m1', 'Mission 1'], ['m2', 'Mission 2'], ['m3', 'Mission 3']].map(t => `<button data-rt="${t[0]}" class="${resultTab === t[0] ? 'on' : ''}">${t[1]}</button>`).join('')}<span class="sub" id="rcount"></span></div>
+    <div class="panel glass"><div class="scroll"><table id="resTable"></table></div></div>`);
+  document.querySelectorAll('[data-rt]').forEach(b => b.onclick = () => { resultTab = b.dataset.rt; renderResults(); });
+  const r = await callApi('adminResults', { password: PASSWORD });
+  if (myId !== renderId) return;
+  if (!r.success) { if (r.reason === 'bad_password') screenLogin('เซสชันหมดอายุ'); return; }
+  const data = r[resultTab] || { headers: [], rows: [] }, tb = document.getElementById('resTable');
+  document.getElementById('rcount').textContent = `· ${data.rows.length} คำตอบ`;
+  if (!data.rows.length) { tb.innerHTML = '<tbody><tr><td><div class="empty">ยังไม่มีคำตอบ</div></td></tr></tbody>'; return; }
+  tb.innerHTML = '<thead><tr>' + data.headers.map(x => `<th>${esc(x)}</th>`).join('') + '</tr></thead><tbody>'
+    + data.rows.slice().reverse().map(row => '<tr>' + row.map(c => `<td>${esc(c)}</td>`).join('') + '</tr>').join('') + '</tbody>';
+}
+
+/* ================= CERTIFIED ================= */
+async function renderCertified(){
+  const myId = ++renderId;
+  shell(`<div class="panel glass"><h3 class="sec">ผู้ได้รับ Certificate <span class="sub" id="ccount"></span></h3><div class="scroll"><table id="certTable"></table></div></div>`);
+  async function pull(){
+    const r = await callApi('adminCertified', { password: PASSWORD }); if (myId !== renderId) return;
+    if (!r.success) { if (r.reason === 'bad_password') screenLogin('เซสชันหมดอายุ'); return; }
+    const tb = document.getElementById('certTable'); if (!tb) return;
+    document.getElementById('ccount').textContent = '· ' + r.items.length + ' คน';
+    if (!r.items.length) { tb.innerHTML = '<tbody><tr><td><div class="empty">ยังไม่มีผู้ได้รับ Certificate</div></td></tr></tbody>'; return; }
+    tb.innerHTML = '<thead><tr><th>#</th><th>ชื่อเล่น / ชื่อ</th><th>ทีม</th><th>Group</th></tr></thead><tbody>'
+      + r.items.map(p => `<tr><td class="name">${esc(p.runNo || p.attendeeId)}</td><td><div class="name">${esc(p.nick)}</div><div class="sub">${esc(p.name)}</div></td><td>${esc(p.team || '—')}</td><td><span class="grp grp${p.group}">G${p.group || '-'}</span></td></tr>`).join('') + '</tbody>';
+    liveTick();
+  }
+  await pull(); poll(pull);
+}
+
+if (C.DEMO_MODE) AINEXT.seedDemo();
+screenLogin();
+</script>
+</body>
+</html>

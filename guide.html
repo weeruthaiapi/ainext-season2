@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>คู่มือ NEXT Passport — AI NEXT Season 2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Sans+Thai:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="s2-theme.css">
+<style>
+  html,body{ height:100%; } body{ overflow:hidden; }
+  .deck{ height:100dvh; display:flex; flex-direction:column; position:relative; z-index:2; }
+  .slide{ flex:1; display:none; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:26px 22px 190px; max-width:760px; margin:0 auto; width:100%; overflow-y:auto; }
+  .slide.on{ display:flex; animation:in .4s ease; }
+  @keyframes in{ from{ opacity:0; transform:translateY(14px); } to{ opacity:1; transform:none; } }
+  .kv{ width:min(360px,80%); aspect-ratio:1; border-radius:26px; overflow:hidden; }
+  .kv img{ width:100%; height:100%; object-fit:cover; object-position:50% 25%; display:block; }
+  .big-title{ font-size:clamp(30px,7vw,52px); margin-top:20px; line-height:1; }
+  .laser.mid{ width:min(420px,80%); margin:16px auto 0; }
+  .lead{ color:var(--muted); font-size:clamp(16px,2.8vw,20px); line-height:1.7; margin:14px 0 0; text-wrap:balance; }
+  .step{ display:inline-flex; align-items:center; gap:8px; background:var(--obsidian); color:var(--gold); border:1px solid rgba(255,145,50,.7);
+    font-family:'Chakra Petch'; font-weight:700; font-size:12px; letter-spacing:.16em; border-radius:99px; padding:7px 16px; margin-bottom:14px; box-shadow:0 0 14px rgba(255,122,0,.35); }
+  h1{ font-family:'Chakra Petch'; font-weight:700; font-size:clamp(24px,5vw,38px); margin:0 0 10px; line-height:1.25; text-wrap:balance; }
+  h1 .em{ color:var(--gold); }
+  ul.big{ list-style:none; padding:0; margin:8px 0 0; text-align:left; max-width:580px; width:100%; }
+  ul.big li{ border-radius:16px; padding:14px 16px; margin:10px 0; font-size:clamp(15.5px,2.6vw,18.5px); line-height:1.6; display:flex; gap:13px; align-items:center; }
+  ul.big li b{ color:var(--gold); font-weight:600; }
+  .ic{ flex:0 0 auto; width:36px; height:36px; border-radius:11px; background:var(--obsidian); border:1px solid rgba(255,145,50,.6); display:flex; align-items:center; justify-content:center; color:var(--gold); }
+  .stamps{ display:flex; gap:16px; margin-top:22px; }
+  .stamp{ width:80px; height:80px; border-radius:50%; border:3px solid var(--gold); color:var(--gold); display:flex; align-items:center; justify-content:center;
+    background:radial-gradient(circle at 35% 30%, rgba(255,190,80,.35), #140803 72%); transform:rotate(-8deg); box-shadow:0 0 18px #FF7A00; font-family:'Chakra Petch'; font-weight:700; font-size:20px; }
+  .stamp:nth-child(2){ transform:rotate(5deg); } .stamp:nth-child(3){ transform:rotate(-3deg); }
+  .slide.on .stamp{ animation:slam .55s cubic-bezier(.2,1.6,.4,1) both; } .slide.on .stamp:nth-child(2){ animation-delay:.25s; } .slide.on .stamp:nth-child(3){ animation-delay:.5s; }
+  @keyframes slam{ 0%{ transform:scale(2.4) rotate(-30deg); opacity:0; } 60%{ transform:scale(.9) rotate(-6deg); opacity:1; } 100%{ transform:scale(1) rotate(-8deg); } }
+  .nav{ position:fixed; bottom:0; left:0; right:0; z-index:5; display:flex; justify-content:space-between; align-items:center; padding:14px 18px calc(14px + env(safe-area-inset-bottom)); gap:12px;
+    background:linear-gradient(180deg, transparent, rgba(22,7,2,.85) 45%); padding-right:110px; }
+  .nav button{ font-family:'Chakra Petch'; font-weight:700; border-radius:13px; padding:12px 20px; cursor:pointer; border:1px solid var(--glass-brd); background:rgba(17,9,6,.5); color:#fff; font-size:14.5px; }
+  .nav button.primary{ background:linear-gradient(90deg,#fff,#FFE4C4); color:var(--cta-text); border:none; box-shadow:0 10px 26px rgba(0,0,0,.3); }
+  .dots{ display:flex; gap:6px; }
+  .dots i{ width:8px; height:8px; border-radius:50%; background:rgba(255,255,255,.3); transition:.2s; }
+  .dots i.on{ background:#fff; width:22px; border-radius:6px; box-shadow:0 0 10px #FF7A00; }
+  .nn-dock{ bottom:max(70px, calc(env(safe-area-inset-bottom) + 70px))!important; }
+  .cf{ position:fixed; top:-14px; width:10px; height:14px; z-index:9; pointer-events:none; animation:fall linear forwards; }
+  @keyframes fall{ to{ transform:translateY(110vh) rotate(720deg); opacity:.4; } }
+</style>
+</head>
+<body>
+<div class="s2-tiles" aria-hidden="true">
+  <div class="s2-tile t1">ChatGPT</div><div class="s2-tile t2">Claude</div><div class="s2-tile t3">Manus</div><div class="s2-tile t4">NotebookLM</div>
+  <div class="s2-tile code t5">&lt;/&gt;</div><div class="s2-tile code t6">&lt;/&gt;</div>
+</div>
+<div class="deck" id="deck"></div>
+<div class="nav">
+  <button id="prev">←</button>
+  <div class="dots" id="dots"></div>
+  <button id="next" class="primary">ถัดไป →</button>
+</div>
+
+<script src="config.js"></script>
+<script src="nnext-bot.js"></script>
+<script>
+var C = window.AINEXT_CONFIG;
+function I(name){
+  var p = {
+    award:'<circle cx="12" cy="8" r="6"></circle><path d="M15.5 12.9 17 22l-5-3-5 3 1.5-9.1"></path>',
+    trophy:'<path d="M8 21h8M12 17v4M7 4h10v4a5 5 0 0 1-10 0V4z"></path><path d="M5 4H3v2a3 3 0 0 0 3 3M19 4h2v2a3 3 0 0 1-3 3"></path>',
+    user:'<circle cx="12" cy="8" r="4"></circle><path d="M4 21a8 8 0 0 1 16 0"></path>',
+    chat:'<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>',
+    check:'<path d="M20 6 9 17l-5-5"></path>',
+    id:'<rect x="3" y="5" width="18" height="14" rx="2"></rect><circle cx="9" cy="12" r="2"></circle><path d="M14 10h4M14 14h4"></path>',
+    users:'<circle cx="9" cy="8" r="3.2"></circle><path d="M3.5 20a5.5 5.5 0 0 1 11 0"></path><path d="M16 5.5a3 3 0 0 1 0 5.8M20.5 20a5.5 5.5 0 0 0-4-5.3"></path>',
+    food:'<path d="M4 3v7a3 3 0 0 0 6 0V3M7 3v18"></path><path d="M17 3c-1.5 0-3 1.8-3 5s1.5 4 3 4v6"></path>',
+    link:'<path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"></path><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"></path>',
+    star:'<path d="M12 3l2.6 5.6L21 9.3l-4.5 4.2 1.1 6.1L12 16.8 6.4 19.6l1.1-6.1L3 9.3l6.4-.7z"></path>',
+    vote:'<path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>',
+    doc:'<path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><path d="M14 3v6h6"></path>',
+    save:'<path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><path d="M17 21v-8H7v8M7 3v5h8"></path>',
+    phone:'<rect x="6" y="2" width="12" height="20" rx="2"></rect><path d="M11 18h2"></path>',
+    globe:'<circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"></path>'
+  };
+  return '<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+(p[name]||'')+'</svg>';
+}
+function li(icon, html){ return '<li class="glass"><span class="ic">'+I(icon)+'</span><span>'+html+'</span></li>'; }
+
+/* each slide: [html, bot line, bot mood] */
+var slides = [
+  ['<section class="slide"><div class="kv obsidian"><img src="'+C.KEY_VISUAL+'" alt="AI NEXT Season 2"></div><div class="s2-metal big-title">NEXT Passport</div><div class="laser mid"></div><p class="lead">Track Missions เพื่อรับ Certificate<br>AI NEXT Bootcamp '+C.SEASON_LABEL+' · by Bizcore</p></section>',
+    'สวัสดีครับ! ผม <b>N\'NEXT</b> จะพาทัวร์ NEXT Passport ใน 1 นาที 🎧 ปัดซ้าย หรือกด <b>ถัดไป</b> ได้เลย', 'happy'],
+  ['<section class="slide"><div class="step">'+I('award')+' CONCEPT</div><h1>NEXT Passport คืออะไร?</h1><ul class="big">'
+    + li('award','<b>พาสปอร์ตดิจิทัล</b> สะสมแสตมป์ 3 ดวงจาก Mission สั้น ๆ ระหว่างวัน')
+    + li('trophy','ครบ <b>3 แสตมป์</b> = อยู่ครบทั้งวัน → รับ <b>E-Certificate Season 2</b>')
+    + '</ul><div class="stamps"><div class="stamp">M1</div><div class="stamp">M2</div><div class="stamp">M3</div></div></section>',
+    'ทุกครั้งที่ส่ง Mission จะมีเสียง <b>ปั๊ม!</b> แสตมป์ลงพาสปอร์ต พร้อมมือถือสั่นเบา ๆ 🎖', 'happy'],
+  ['<section class="slide"><div class="step">STEP 1 · ตอนเช้า</div><h1>เช็คอินเข้างาน</h1><ul class="big">'
+    + li('user','<b>สแกน QR ของงาน</b> เพื่อเปิดเว็บ NEXT Passport')
+    + li('doc','พิมพ์ <b>ชื่อจริง</b> หรือ <b>ชื่อเล่น</b> หรือ <b>เบอร์โทร 4 ตัวท้าย</b>')
+    + li('users','ถ้ามีหลายคนตรงกัน ระบบให้ <b>แตะเลือกชื่อของคุณ</b>')
+    + '</ul></section>',
+    'จำชื่อที่ลงทะเบียนไม่ได้? ใช้ <b>เบอร์ 4 ตัวท้าย</b> แทนได้เลย ง่ายสุด ๆ', 'idle'],
+  ['<section class="slide"><div class="step">'+I('globe')+' TIP</div><h1>เปิดใน <span class="em">Safari / Chrome</span></h1><ul class="big">'
+    + li('phone','ถ้าเปิดลิงก์จากแชท LINE จะมีแถบแจ้งเตือนด้านบน')
+    + li('globe','กด <b>"เปิดในเบราว์เซอร์"</b> เพื่อให้ระบบ<b>จำคุณได้ทั้งวัน</b>')
+    + li('save','และบันทึก <b>E-Certificate</b> ลงอัลบั้มได้ชัวร์')
+    + '</ul></section>',
+    'ในแอป LINE บางครั้งระบบลืมว่าคุณเป็นใคร — เปิดในเบราว์เซอร์ปลอดภัยกว่านะ 🌐', 'idle'],
+  ['<section class="slide"><div class="step">STEP 2</div><h1>เข้ากลุ่ม LINE OpenChat</h1><ul class="big">'
+    + li('chat','<b>สแกน QR</b> หรือกดปุ่มเขียว แล้วกด Join')
+    + li('check','กลับมาติ๊ก <b>"ฉันเข้ากลุ่มแล้ว"</b> + ยินยอม PDPA แล้วยืนยัน')
+    + li('chat','กลุ่มนี้ใช้ <b>รับโจทย์ · ส่งงาน · ติดตามประกาศ</b>')
+    + '</ul></section>',
+    'กลุ่ม OpenChat คือที่ที่ทีมงานประกาศทุกอย่าง อย่าลืมเปิดแจ้งเตือนนะ 🔔', 'happy'],
+  ['<section class="slide"><div class="step">STEP 3</div><h1>จำ 3 อย่างนี้</h1><ul class="big">'
+    + li('id','<b>Attendee ID</b> ของคุณ')
+    + li('users','<b>Team / Group</b> — นั่งและทำ Challenge กับทีมนี้')
+    + li('food','<b>เมนูอาหารกลางวัน</b> — แตะผมที่หน้า Passport จะเตือนให้')
+    + '</ul></section>',
+    'ที่หน้า Passport แตะผมได้ทุกเมื่อ ผมจะบอก <b>ทีม</b> และ <b>เมนูกลางวัน</b> ของคุณ 🍱', 'happy'],
+  ['<section class="slide"><div class="step">MISSIONS</div><h1>3 Missions ระหว่างวัน</h1><ul class="big">'
+    + li('star','Mission 1 · หลังจบ <b>'+C.SESSION1_NAME+'</b>')
+    + li('star','Mission 2 · หลังจบ <b>'+C.SESSION2_NAME+'</b>')
+    + li('vote','Mission 3 · <b>AI NEXT Challenge</b> — โหวตทีมในกลุ่มคุณ + แบบสอบถาม 3 ขั้นสั้น ๆ')
+    + '</ul></section>',
+    'Mission ที่ยังล็อกอยู่ แตะเข้าไปรอได้ — มีปุ่ม <b>⚡ Charge AI Power</b> ให้กดเล่นระหว่างรอ 🎶', 'dj'],
+  ['<section class="slide"><div class="step">HOW TO</div><h1>ทำ Mission ยังไง?</h1><ul class="big">'
+    + li('link','เปิด<b>ลิงก์เดิม</b> — ระบบจำคุณได้ ไม่ต้องเช็คอินใหม่')
+    + li('save','ทุกคำตอบ<b>เซฟร่างอัตโนมัติ</b> ออกไปกดลิงก์ LINE แล้วกลับมาก็ไม่หาย')
+    + li('vote','โหวตทีมใน Mission 3 <b>บันทึกทันที</b> และเปลี่ยนใจได้จนกว่าจะส่ง')
+    + '</ul></section>',
+    'ผมเซฟคำตอบให้ทุกตัวอักษร 💾 แบตหมด รีเฟรช หรือสลับแอปก็ทำต่อได้', 'happy'],
+  ['<section class="slide"><div class="step">'+I('trophy')+' CERTIFICATE</div><h1>รับ E-Certificate</h1><ul class="big">'
+    + li('check','เช็คอิน + <b>แสตมป์ครบ 3 ดวง</b> + ทีมงานประกาศ = ได้ Certificate')
+    + li('phone','บนมือถือ กด <b>"บันทึกรูป"</b> → เลือก <b>Save Image</b> เก็บลงอัลบั้ม')
+    + li('doc','ชื่อบน Certificate ใช้<b>ชื่อที่กรอกตอนสมัคร</b>')
+    + '</ul></section>',
+    'Certificate เป็นรูปขนาด 4:5 พร้อมโพสต์ IG / Facebook ได้เลย 📸', 'happy'],
+  ['<section class="slide"><div class="kv obsidian" style="width:min(260px,60%)"><img src="'+C.KEY_VISUAL+'" alt=""></div><h1 style="margin-top:22px"><span class="em">พร้อมแล้ว ไปให้สุด!</span></h1><p class="lead">ติดปัญหาตรงไหน ทักทีมงานที่จุดลงทะเบียนได้ตลอดวัน<br>ขอให้สนุกกับ AI NEXT Season 2 🚀</p></section>',
+    'จบทัวร์แล้ว! เจอกันในงานนะ ✨ แตะผมได้ทุกเมื่อถ้าต้องการความช่วยเหลือ', 'happy']
+];
+
+var deck = document.getElementById('deck'); deck.innerHTML = slides.map(function(s){ return s[0]; }).join('');
+var els = [].slice.call(document.querySelectorAll('.slide')), cur = 0, dots = document.getElementById('dots');
+els.forEach(function(_, i){ var d = document.createElement('i'); dots.appendChild(d); });
+NNext.setTips([
+  { text: 'ปัดซ้าย/ขวา หรือกดลูกศรบนคีย์บอร์ดเพื่อเปลี่ยนหน้า', mood: 'idle' },
+  { text: 'ค้นหาตอนเช็คอินได้ทั้ง <b>ชื่อจริง · ชื่อเล่น · เบอร์ 4 ตัวท้าย</b>', mood: 'happy' },
+  { text: 'อย่าลืมเปิดเว็บใน <b>Safari / Chrome</b> นะ 🌐', mood: 'idle' }
+]);
+function go(n){
+  cur = Math.max(0, Math.min(els.length - 1, n));
+  els.forEach(function(s, i){ s.classList.toggle('on', i === cur); });
+  [].slice.call(dots.children).forEach(function(d, i){ d.className = i === cur ? 'on' : ''; });
+  document.getElementById('next').textContent = cur === els.length - 1 ? 'เริ่มใช้งาน ✓' : 'ถัดไป →';
+  document.getElementById('prev').style.visibility = cur === 0 ? 'hidden' : 'visible';
+  NNext.mood(slides[cur][2] === 'dj' ? 'dj' : 'idle');
+  NNext.say(slides[cur][1], { mood: slides[cur][2], hold: 9000 });
+  if (cur === els.length - 1) confetti();
+}
+document.getElementById('next').onclick = function(){ if (cur < els.length - 1) go(cur + 1); else location.href = 'index.html'; };
+document.getElementById('prev').onclick = function(){ go(cur - 1); };
+document.addEventListener('keydown', function(e){ if (e.key === 'ArrowRight' || e.key === ' ') go(cur + 1); if (e.key === 'ArrowLeft') go(cur - 1); });
+var x0 = null;
+document.addEventListener('touchstart', function(e){ x0 = e.touches[0].clientX; }, { passive: true });
+document.addEventListener('touchend', function(e){ if (x0 === null) return; var dx = e.changedTouches[0].clientX - x0; if (Math.abs(dx) > 50) go(cur + (dx < 0 ? 1 : -1)); x0 = null; }, { passive: true });
+function confetti(){
+  var cols = ['#FFD166', '#FF7A00', '#fff', '#FF5A1F'];
+  for (var i = 0; i < 32; i++) { var d = document.createElement('div'); d.className = 'cf';
+    d.style.left = (Math.random() * 100) + 'vw'; d.style.background = cols[i % cols.length];
+    d.style.animationDuration = (1.7 + Math.random() * 1.9) + 's';
+    document.body.appendChild(d); setTimeout((function(el){ return function(){ el.remove(); }; })(d), 4200); }
+}
+go(0);
+</script>
+</body>
+</html>

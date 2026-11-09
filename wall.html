@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI NEXT Season 2 — Live Wall</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="s2-theme.css">
+<style>
+  body{ overflow:hidden; height:100vh; }
+  .wall{ position:relative; z-index:2; height:100vh; display:flex; flex-direction:column; padding:2.4vh 3.4vw 2vh; }
+  .top{ display:flex; align-items:center; justify-content:space-between; gap:20px; }
+  .top img{ height:clamp(60px,9vh,110px); width:auto; filter:drop-shadow(0 0 30px rgba(255,120,30,.5)); }
+  .modes{ display:flex; gap:8px; }
+  .modes button{ font-family:'Chakra Petch'; font-weight:700; font-size:clamp(12px,1.1vw,16px); letter-spacing:.06em; padding:9px 16px; border-radius:99px; cursor:pointer;
+    color:#fff; background:rgba(17,9,6,.4); border:1px solid rgba(255,255,255,.3); }
+  .modes button.on{ background:#fff; color:var(--cta-text); border-color:#fff; box-shadow:0 0 18px rgba(255,255,255,.55); }
+  .modes button kbd{ font-family:inherit; opacity:.55; margin-right:6px; }
+  .stage{ flex:1; position:relative; min-height:0; }
+  .mode{ position:absolute; inset:0; display:none; flex-direction:column; align-items:center; justify-content:center; text-align:center; }
+  .mode.on{ display:flex; animation:modeIn .6s ease both; }
+  @keyframes modeIn{ from{ opacity:0; transform:translateY(20px) scale(.98); } to{ opacity:1; transform:none; } }
+  .kick{ font-family:'Chakra Petch'; font-weight:700; font-size:clamp(14px,1.5vw,22px); letter-spacing:.5em; text-indent:.5em; color:var(--gold); text-transform:uppercase; }
+  .ttl{ font-size:clamp(34px,4.6vw,72px); margin:.4vh 0 0; }
+  .laser.w{ width:min(820px,70vw); margin:2vh auto; height:4px; }
+
+  /* mode 1 — check-in */
+  .count{ font-family:'Chakra Petch'; font-size:clamp(110px,19vw,280px); font-weight:700; line-height:1; font-variant-numeric:tabular-nums;
+    background:var(--metal); -webkit-background-clip:text; background-clip:text; color:transparent; filter:drop-shadow(0 4px 30px rgba(255,90,0,.7)); }
+  .count small{ font-size:.3em; }
+  .label{ font-size:clamp(20px,2.3vw,34px); color:var(--muted); font-weight:700; }
+  .bar{ width:min(820px,72vw); height:18px; border-radius:99px; margin:3vh auto 0; overflow:hidden; background:rgba(17,9,6,.45); border:1px solid rgba(255,255,255,.25); }
+  .bar i{ display:block; height:100%; width:0; border-radius:99px; background:var(--laser); background-size:200% 100%; box-shadow:0 0 18px #FF7A00; transition:width 1s ease; }
+  .recent{ display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:4vh; max-width:88vw; }
+  .chip{ padding:10px 22px; border-radius:99px; font-size:clamp(17px,1.8vw,26px); font-weight:700; animation:pop .5s ease; }
+  .chip span{ color:var(--gold); font-family:'Chakra Petch'; font-size:.75em; margin-left:10px; }
+  @keyframes pop{ from{ transform:scale(.5); opacity:0; } to{ transform:none; opacity:1; } }
+
+  /* mode 2 — team leaderboard */
+  .board{ width:min(1500px,94vw); display:grid; grid-template-columns:1fr 1fr; gap:1.4vh 2.4vw; margin-top:2vh; }
+  .trow{ display:flex; align-items:center; gap:14px; padding:1.1vh 18px; border-radius:16px; transition:transform .6s; }
+  .trow .rk{ width:clamp(34px,3vw,48px); height:clamp(34px,3vw,48px); border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center;
+    background:var(--obsidian); border:2px solid rgba(255,145,50,.7); font-family:'Chakra Petch'; font-weight:700; color:var(--gold); font-size:clamp(14px,1.3vw,20px); }
+  .trow.top1 .rk{ background:var(--gold); color:var(--cta-text); box-shadow:0 0 20px var(--gold); }
+  .trow .tn{ font-family:'Chakra Petch'; font-weight:700; font-size:clamp(16px,1.6vw,26px); width:clamp(90px,9vw,150px); text-align:left; }
+  .trow .tb{ flex:1; height:clamp(14px,1.5vh,22px); border-radius:99px; background:rgba(17,9,6,.45); overflow:hidden; }
+  .trow .tb i{ display:block; height:100%; border-radius:99px; background:linear-gradient(90deg,#FF6D00,#FFD166,#FFF3D1); box-shadow:0 0 14px #FF7A00; transition:width 1.2s cubic-bezier(.2,.8,.2,1); }
+  .trow .pc{ font-family:'Chakra Petch'; font-weight:700; font-size:clamp(16px,1.6vw,26px); width:clamp(60px,5vw,90px); text-align:right; font-variant-numeric:tabular-nums; }
+  .trow .st{ font-size:clamp(11px,.95vw,15px); color:var(--muted); width:clamp(70px,6vw,110px); text-align:right; }
+
+  /* mode 3 — vote race */
+  .race{ width:min(1600px,95vw); display:grid; grid-template-columns:1fr 1fr; gap:2.4vw; margin-top:2vh; }
+  .rgroup{ padding:2vh 1.6vw; border-radius:22px; }
+  .rgroup h3{ margin:0 0 1.4vh; font-family:'Chakra Petch'; font-size:clamp(20px,2vw,32px); letter-spacing:.1em; text-align:left; display:flex; justify-content:space-between; align-items:baseline; }
+  .rgroup h3 small{ font-size:.55em; color:var(--muted); letter-spacing:.05em; }
+  .lanes{ position:relative; }
+  .lane{ position:absolute; left:0; right:0; display:flex; align-items:center; gap:12px; transition:top .8s cubic-bezier(.2,.8,.2,1); }
+  .lane .ln{ font-family:'Chakra Petch'; font-weight:700; font-size:clamp(15px,1.5vw,24px); width:clamp(84px,8vw,130px); text-align:left; }
+  .lane .lb{ flex:1; height:clamp(22px,3.4vh,40px); border-radius:12px; background:rgba(17,9,6,.4); overflow:hidden; position:relative; }
+  .lane .lb i{ position:absolute; left:0; top:0; bottom:0; border-radius:12px; background:linear-gradient(90deg,rgba(255,109,0,.85),#FFD166); box-shadow:0 0 16px rgba(255,122,0,.8); transition:width 1s cubic-bezier(.2,.8,.2,1); }
+  .lane.lead .lb i{ background:linear-gradient(90deg,#FF6D00,#FFF3D1); }
+  .lane .lv{ font-family:'Chakra Petch'; font-weight:700; font-size:clamp(18px,1.8vw,30px); width:clamp(44px,4vw,64px); text-align:right; font-variant-numeric:tabular-nums; }
+  .lane.lead .ln::after{ content:' 👑'; }
+
+  .foot{ display:flex; justify-content:space-between; align-items:center; color:var(--muted); font-size:clamp(11px,1vw,15px); letter-spacing:.08em; }
+  .live-dot{ display:inline-block; width:10px; height:10px; border-radius:50%; background:#38F29B; margin-right:8px; animation:live 1.6s infinite; vertical-align:middle; }
+  @keyframes live{ 0%{ box-shadow:0 0 0 0 rgba(56,242,155,.6); } 70%{ box-shadow:0 0 0 12px rgba(56,242,155,0); } 100%{ box-shadow:0 0 0 0 rgba(56,242,155,0); } }
+  .empty{ color:var(--muted); font-size:clamp(16px,1.6vw,24px); padding:4vh; }
+  @media (max-width:900px){ body{ overflow:auto; height:auto; } .wall{ height:auto; min-height:100vh; } .stage{ min-height:80vh; } .board,.race{ grid-template-columns:1fr; } .mode{ position:relative; inset:auto; } }
+</style>
+</head>
+<body>
+<div class="s2-tiles" aria-hidden="true">
+  <div class="s2-tile t1">ChatGPT</div><div class="s2-tile t2">Claude</div><div class="s2-tile t3">Manus</div><div class="s2-tile t4">NotebookLM</div>
+  <div class="s2-tile code t5">&lt;/&gt;</div><div class="s2-tile code t6">&lt;/&gt;</div>
+</div>
+<div class="wall">
+  <div class="top">
+    <img id="logo" alt="AI NEXT by Bizcore">
+    <div class="modes" id="modes">
+      <button data-mode="checkin"><kbd>1</kbd>Check-in</button>
+      <button data-mode="missions"><kbd>2</kbd>Mission Progress</button>
+      <button data-mode="votes"><kbd>3</kbd>Live Vote</button>
+    </div>
+  </div>
+
+  <div class="stage">
+    <section class="mode" id="m-checkin">
+      <div class="kick">Season 2 · Live Check-in</div>
+      <div class="count"><span id="n">0</span><small> / <span id="total">0</span></small></div>
+      <div class="label"><span class="live-dot"></span>คนถึงงานแล้ว 🔥</div>
+      <div class="bar"><i id="bar"></i></div>
+      <div class="recent" id="recent"></div>
+    </section>
+
+    <section class="mode" id="m-missions">
+      <div class="kick">Season 2 · NEXT Passport</div>
+      <div class="s2-metal ttl">Mission Progress</div>
+      <div class="laser w"></div>
+      <div class="board" id="board"></div>
+    </section>
+
+    <section class="mode" id="m-votes">
+      <div class="kick">AI NEXT Challenge</div>
+      <div class="s2-metal ttl">Live Vote</div>
+      <div class="laser w"></div>
+      <div class="race">
+        <div class="rgroup glass"><h3>GROUP 1 <small id="g1sum"></small></h3><div class="lanes" id="g1"></div></div>
+        <div class="rgroup glass"><h3>GROUP 2 <small id="g2sum"></small></h3><div class="lanes" id="g2"></div></div>
+      </div>
+    </section>
+  </div>
+
+  <div class="foot"><span><span class="live-dot"></span><span id="status">เชื่อมต่อแล้ว</span></span><span>AI NEXT Bootcamp Season 2 · by Bizcore · กด 1 / 2 / 3 สลับโหมด · F เต็มจอ</span></div>
+</div>
+
+<script src="config.js"></script>
+<script src="api.js"></script>
+<script>
+const C = window.AINEXT_CONFIG, { callApi, esc } = window.AINEXT;
+document.getElementById('logo').src = C.LOGO;
+const MODES = ['checkin', 'missions', 'votes'];
+let mode = null, lastServerMode = null, last = null, cur = 0;
+
+function setMode(m){
+  if (MODES.indexOf(m) < 0 || m === mode) return;
+  mode = m;
+  MODES.forEach(x => document.getElementById('m-' + x).classList.toggle('on', x === m));
+  document.querySelectorAll('#modes button').forEach(b => b.classList.toggle('on', b.dataset.mode === m));
+  if (last) render(last, true);
+}
+document.querySelectorAll('#modes button').forEach(b => b.onclick = () => setMode(b.dataset.mode));
+document.addEventListener('keydown', e => {
+  if (e.key === '1' || e.key === '2' || e.key === '3') setMode(MODES[Number(e.key) - 1]);
+  if (e.key === 'f' || e.key === 'F') { if (!document.fullscreenElement) document.documentElement.requestFullscreen && document.documentElement.requestFullscreen(); else document.exitFullscreen(); }
+});
+
+function animateTo(target){
+  const el = document.getElementById('n');
+  if (target === cur) { el.textContent = target; return; }
+  const step = Math.max(1, Math.round(Math.abs(target - cur) / 20));
+  (function tick(){ cur += target > cur ? Math.min(step, target - cur) : -Math.min(step, cur - target); el.textContent = cur; if (cur !== target) setTimeout(tick, 50); })();
+}
+function renderCheckin(d){
+  document.getElementById('total').textContent = d.total;
+  animateTo(d.checked || 0);
+  document.getElementById('bar').style.width = (d.total ? d.checked / d.total * 100 : 0) + '%';
+  const html = (d.recent || []).map(r => `<div class="chip glass">${esc(r.nick)}<span>${esc(r.group || '—')}</span></div>`).join('');
+  const box = document.getElementById('recent'); if (box.dataset.h !== html) { box.innerHTML = html; box.dataset.h = html; }
+}
+function renderMissions(d){
+  const teams = d.teams || [], box = document.getElementById('board');
+  if (!teams.length) { box.innerHTML = '<div class="empty" style="grid-column:1/-1">ยังไม่มีข้อมูลทีม</div>'; return; }
+  // keep existing row elements so bars animate between polls
+  const order = teams.map(t => t.team).join('|');
+  if (box.dataset.order !== order) {
+    box.innerHTML = teams.map((t, i) => `<div class="trow glass" data-team="${esc(t.team)}"><div class="rk">${i + 1}</div><div class="tn">${esc(t.team)}</div><div class="tb"><i style="width:0"></i></div><div class="pc">0%</div><div class="st"></div></div>`).join('');
+    box.dataset.order = order;
+  }
+  teams.forEach((t, i) => {
+    const row = box.children[i]; if (!row) return;
+    row.classList.toggle('top1', i === 0 && t.pct > 0);
+    requestAnimationFrame(() => { row.querySelector('.tb i').style.width = t.pct + '%'; });
+    row.querySelector('.pc').textContent = t.pct + '%';
+    row.querySelector('.st').textContent = `${t.stamps}/${t.members * 3} ✦ · ${t.checked}/${t.members} คน`;
+  });
+}
+function renderLanes(id, list, sumId){
+  const box = document.getElementById(id), max = Math.max(1, ...list.map(x => x.votes)), H = 'clamp(22px,3.4vh,40px)';
+  const total = list.reduce((s, x) => s + x.votes, 0);
+  document.getElementById(sumId).textContent = total + ' โหวต';
+  if (!list.length) { box.innerHTML = '<div class="empty">ยังไม่มีทีม</div>'; box.style.height = 'auto'; return; }
+  const rowH = Math.max(34, Math.min(62, window.innerHeight * 0.058));
+  box.style.height = (list.length * rowH) + 'px';
+  list.forEach((x, i) => {
+    let lane = box.querySelector(`[data-team="${CSS.escape(x.team)}"]`);
+    if (!lane) { lane = document.createElement('div'); lane.className = 'lane'; lane.dataset.team = x.team; lane.style.top = (list.length * rowH) + 'px';
+      lane.innerHTML = `<div class="ln">${esc(x.team)}</div><div class="lb"><i style="width:0"></i></div><div class="lv">0</div>`; box.appendChild(lane); }
+    requestAnimationFrame(() => { lane.style.top = (i * rowH) + 'px'; lane.querySelector('.lb i').style.width = (x.votes / max * 100) + '%'; });
+    lane.classList.toggle('lead', i === 0 && x.votes > 0);
+    lane.querySelector('.lv').textContent = x.votes;
+  });
+  box.querySelectorAll('.lane').forEach(l => { if (!list.some(x => x.team === l.dataset.team)) l.remove(); });
+}
+function render(d){
+  if (mode === 'checkin') renderCheckin(d);
+  else if (mode === 'missions') renderMissions(d);
+  else if (mode === 'votes') { const v = d.votes || {}; renderLanes('g1', v.group1 || [], 'g1sum'); renderLanes('g2', v.group2 || [], 'g2sum'); }
+}
+async function tick(){
+  try {
+    const d = await callApi('getWall');
+    if (!d || !d.success) { document.getElementById('status').textContent = 'กำลังเชื่อมต่อใหม่…'; return; }
+    document.getElementById('status').textContent = 'อัปเดต ' + new Date().toLocaleTimeString('th-TH');
+    last = d;
+    // admin เปลี่ยนโหมด → ตามทันที; กดคีย์บอร์ดเอง → อยู่โหมดนั้นจนกว่า admin จะเปลี่ยนอีกครั้ง
+    if (d.mode && d.mode !== lastServerMode) { lastServerMode = d.mode; setMode(d.mode); }
+    if (!mode) setMode('checkin');
+    render(d);
+  } catch (e) { document.getElementById('status').textContent = 'ออฟไลน์ — กำลังลองใหม่'; }
+}
+tick();
+window.AINEXT.jitterInterval(tick, C.WALL_POLL_MS, 1000);
+</script>
+</body>
+</html>
