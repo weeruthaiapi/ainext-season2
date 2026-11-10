@@ -36,8 +36,9 @@
   .err{ margin:12px 0 0; color:#fff; background:rgba(120,10,0,.45); border:1px solid rgba(255,160,140,.6); border-radius:12px; padding:10px 13px; font-size:14px; }
 
   /* ===== landing hero ===== */
-  .hero{ position:relative; border-radius:24px; overflow:hidden; aspect-ratio:1/1.02; margin-top:6px; }
-  .hero img{ width:100%; height:100%; object-fit:cover; object-position:50% 20%; display:block; }
+  /* crop to the visor/face — the key visual's own "AI NEXT" logo (lower third) stays out of frame */
+  .hero{ position:relative; border-radius:24px; overflow:hidden; aspect-ratio:16/10; margin-top:6px; }
+  .hero img{ width:100%; height:100%; object-fit:cover; object-position:50% 4%; display:block; }
   .hero::after{ content:''; position:absolute; inset:0; background:linear-gradient(180deg, rgba(22,7,2,0) 45%, rgba(22,7,2,.92) 100%); }
   .hero .cap{ position:absolute; left:18px; right:18px; bottom:16px; z-index:2; }
   .hero .cap .s2-metal{ font-size:34px; line-height:1; }
@@ -72,7 +73,7 @@
     background:rgba(255,158,0,.18); border:1px solid var(--gold); color:var(--gold); }
   .passport .laser{ margin:14px 0; }
   .meta{ display:grid; grid-template-columns:repeat(3,1fr); gap:8px; text-align:center; position:relative; }
-  .meta div{ background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.14); border-radius:12px; padding:8px 4px; min-width:0; }
+  .meta > div{ background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.14); border-radius:12px; padding:8px 4px; min-width:0; }
   .meta .l{ font-family:'Chakra Petch'; font-size:10px; letter-spacing:.12em; color:var(--muted); text-transform:uppercase; }
   .meta .v{ font-family:'Chakra Petch'; font-weight:700; font-size:13.5px; color:var(--gold); margin-top:2px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .rings{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:16px; position:relative; }
@@ -172,7 +173,7 @@
     .app{ max-width:720px; }
     .screen-wrap{ padding:34px 56px 140px; }
     h1.t{ font-size:36px; } h2.t{ font-size:30px; }
-    .hero{ aspect-ratio:16/11; }
+    .hero{ aspect-ratio:16/9; }
   }
 </style>
 </head>
@@ -260,6 +261,8 @@ function shell(bodyHtml, showBar){
     </div>
     <div class="screen-wrap"><div class="screen">${bodyHtml}</div></div>`;
   const b = document.getElementById('barCert'); if (b) b.onclick = goCert;
+  const d = (latestStatus && latestStatus.done) || {};
+  const bd = document.getElementById('barDone'); if (bd) bd.textContent = ((d.m1 ? 1 : 0) + (d.m2 ? 1 : 0) + (d.m3 ? 1 : 0)) + '/3';
   window.scrollTo(0, 0);
 }
 function go(name, fn){ screen = name; fn(); }
@@ -844,11 +847,13 @@ async function drawCert(p, withImages){
   ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
   if (withImages) {
     const kv = await loadImg(C.KEY_VISUAL);
-    if (kv) { // crop the visor/face area (top of key visual)
-      const sw = kv.naturalWidth, sh = sw * 700 / W, sy = kv.naturalHeight * 0.04;
-      ctx.drawImage(kv, 0, sy, sw, sh, 0, 0, W, 700);
+    if (kv) { // zoom into the visor/face — drops the floating ChatGPT/Claude tiles on the left and the baked logo at the bottom
+      const sx = kv.naturalWidth * 0.22, sw = kv.naturalWidth * 0.74, sh = sw * 700 / W, sy = kv.naturalHeight * 0.03;
+      ctx.drawImage(kv, sx, sy, sw, sh, 0, 0, W, 700);
     }
   }
+  const topShade = ctx.createLinearGradient(0, 0, 0, 280); topShade.addColorStop(0, 'rgba(17,9,6,.6)'); topShade.addColorStop(1, 'rgba(17,9,6,0)');
+  ctx.fillStyle = topShade; ctx.fillRect(0, 0, W, 280);
   const fade = ctx.createLinearGradient(0, 380, 0, 720); fade.addColorStop(0, 'rgba(22,7,2,0)'); fade.addColorStop(1, 'rgba(17,9,6,1)');
   ctx.fillStyle = fade; ctx.fillRect(0, 380, W, 340);
   // obsidian lower panel
@@ -929,7 +934,7 @@ function screenCert(){
   document.getElementById('cBack').onclick = () => go('hub', screenHub);
   NNext.busy('กำลังวาด E-Certificate ให้คุณ…');
   buildCertBlob(p).then(blob => {
-    NNext.done(`🎖 ยินดีด้วยคุณ<b>${esc(nick(p))}</b>! กด <b>บันทึกรูป</b> เก็บไว้ในอัลบั้มได้เลย`, 'happy');
+    NNext.done(); NNext.say(`🎖 ยินดีด้วยคุณ<b>${esc(nick(p))}</b>! กด <b>บันทึกรูป</b> เก็บไว้ในอัลบั้มได้เลย`, { mood: 'happy', hold: 3000 });
     confetti(); vibrate(50);
     if (screen !== 'cert') return;
     const url = URL.createObjectURL(blob), fname = `AI-NEXT-S2-Certificate-${p.runNo || p.attendeeId}.png`;
