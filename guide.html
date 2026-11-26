@@ -93,10 +93,10 @@ var slides = [
     'ทุกครั้งที่ส่ง Mission จะมีเสียง <b>ปั๊ม!</b> แสตมป์ลงพาสปอร์ต พร้อมมือถือสั่นเบา ๆ 🎖', 'happy'],
   ['<section class="slide"><div class="step">STEP 1 · ตอนเช้า</div><h1>เช็คอินเข้างาน</h1><ul class="big">'
     + li('user','<b>สแกน QR ของงาน</b> เพื่อเปิดเว็บ NEXT Passport')
-    + li('doc','พิมพ์ <b>ชื่อจริง</b> หรือ <b>ชื่อเล่น</b> หรือ <b>เบอร์โทร 4 ตัวท้าย</b>')
-    + li('users','ถ้ามีหลายคนตรงกัน ระบบให้ <b>แตะเลือกชื่อของคุณ</b>')
+    + li('phone','กรอก <b>เบอร์โทร 4 ตัวท้าย</b> ที่ใช้ตอนสมัคร')
+    + li('users','ถ้ามีหลายคนเบอร์ลงท้ายเหมือนกัน ระบบให้ <b>แตะเลือกชื่อของคุณ</b>')
     + '</ul></section>',
-    'จำชื่อที่ลงทะเบียนไม่ได้? ใช้ <b>เบอร์ 4 ตัวท้าย</b> แทนได้เลย ง่ายสุด ๆ', 'idle'],
+    'เช็คอินใช้แค่ <b>เบอร์โทร 4 ตัวท้าย</b> — ไม่มีเบอร์ในระบบ ติดต่อเจ้าหน้าที่ได้เลย', 'idle'],
   ['<section class="slide"><div class="step">'+I('globe')+' TIP</div><h1>เปิดใน <span class="em">Safari / Chrome</span></h1><ul class="big">'
     + li('phone','ถ้าเปิดลิงก์จากแชท LINE จะมีแถบแจ้งเตือนด้านบน')
     + li('globe','กด <b>"เปิดในเบราว์เซอร์"</b> เพื่อให้ระบบ<b>จำคุณได้ทั้งวัน</b>')
@@ -111,14 +111,14 @@ var slides = [
     'กลุ่ม OpenChat คือที่ที่ทีมงานประกาศทุกอย่าง อย่าลืมเปิดแจ้งเตือนนะ 🔔', 'happy'],
   ['<section class="slide"><div class="step">STEP 3</div><h1>จำ 3 อย่างนี้</h1><ul class="big">'
     + li('id','<b>Attendee ID</b> ของคุณ')
-    + li('users','<b>Team / Group</b> — นั่งและทำ Challenge กับทีมนี้')
-    + li('food','<b>เมนูอาหารกลางวัน</b> — แตะผมที่หน้า Passport จะเตือนให้')
+    + li('users','<b>กลุ่ม (A1–A5 / B1–B5)</b> — นั่งและทำ Challenge กับกลุ่มนี้')
+    + li('globe','<b>Wi-Fi ประจำกลุ่ม</b> — ชื่อ Wi-Fi + รหัส อยู่ในการ์ดใต้ Passport กดคัดลอกได้')
     + '</ul></section>',
-    'ที่หน้า Passport แตะผมได้ทุกเมื่อ ผมจะบอก <b>ทีม</b> และ <b>เมนูกลางวัน</b> ของคุณ 🍱', 'happy'],
+    'ที่หน้า Passport แตะผมได้ทุกเมื่อ ผมจะบอก <b>กลุ่ม</b> และ <b>Wi-Fi</b> ของคุณ 📶', 'happy'],
   ['<section class="slide"><div class="step">MISSIONS</div><h1>3 Missions ระหว่างวัน</h1><ul class="big">'
     + li('star','Mission 1 · หลังจบ <b>'+C.SESSION1_NAME+'</b>')
     + li('star','Mission 2 · หลังจบ <b>'+C.SESSION2_NAME+'</b>')
-    + li('vote','Mission 3 · <b>AI NEXT Challenge</b> — โหวตทีมในกลุ่มคุณ + แบบสอบถาม 3 ขั้นสั้น ๆ')
+    + li('vote','Mission 3 · <b>AI NEXT Challenge</b> — โหวตกลุ่มใน Group เดียวกับคุณ + แบบสอบถาม 3 ขั้นสั้น ๆ')
     + '</ul></section>',
     'Mission ที่ยังล็อกอยู่ แตะเข้าไปรอได้ — มีปุ่ม <b>⚡ Charge AI Power</b> ให้กดเล่นระหว่างรอ 🎶', 'dj'],
   ['<section class="slide"><div class="step">HOW TO</div><h1>ทำ Mission ยังไง?</h1><ul class="big">'
@@ -142,7 +142,7 @@ var els = [].slice.call(document.querySelectorAll('.slide')), cur = 0, dots = do
 els.forEach(function(_, i){ var d = document.createElement('i'); dots.appendChild(d); });
 NNext.setTips([
   { text: 'ปัดซ้าย/ขวา หรือกดลูกศรบนคีย์บอร์ดเพื่อเปลี่ยนหน้า', mood: 'idle' },
-  { text: 'ค้นหาตอนเช็คอินได้ทั้ง <b>ชื่อจริง · ชื่อเล่น · เบอร์ 4 ตัวท้าย</b>', mood: 'happy' },
+  { text: 'เช็คอินด้วย <b>เบอร์โทร 4 ตัวท้าย</b> เท่านั้นนะ 📱', mood: 'happy' },
   { text: 'อย่าลืมเปิดเว็บใน <b>Safari / Chrome</b> นะ 🌐', mood: 'idle' }
 ]);
 function go(n){

@@ -51,6 +51,8 @@
   .step-row .ss{ font-size:12px; color:var(--muted); }
 
   /* ===== check-in ===== */
+  .field.pin{ text-align:center; font-family:'Chakra Petch'; font-weight:700; font-size:34px; letter-spacing:.5em; text-indent:.5em; padding:14px; }
+  .field.pin::placeholder{ letter-spacing:.3em; font-size:26px; }
   .hint-chips{ display:flex; gap:6px; flex-wrap:wrap; margin:10px 0 0; }
   .hint-chips span{ font-size:12px; padding:5px 10px; border-radius:99px; background:rgba(17,9,6,.35); border:1px solid rgba(255,255,255,.25); color:var(--muted); }
   .scan-visor{ width:230px; height:74px; border-radius:40px; margin:10px auto; position:relative; overflow:hidden; }
@@ -96,8 +98,14 @@
     background:radial-gradient(circle, #FFF6D6, #FFD166 45%, #FF8A00); box-shadow:0 0 10px #FFB000; animation:burst .9s ease-out forwards; }
   @keyframes burst{ to{ transform:translate(var(--dx), var(--dy)) scale(.2); opacity:0; } }
 
-  .lunch{ display:flex; align-items:center; gap:12px; padding:12px 14px; border-radius:16px; margin-top:14px; }
-  .lunch .ic{ font-size:22px; }
+  .wifi{ padding:14px 16px; border-radius:18px; margin-top:14px; }
+  .wifi-h{ display:flex; justify-content:space-between; align-items:center; gap:8px; font-family:'Chakra Petch'; font-weight:700; font-size:14px; letter-spacing:.04em; }
+  .wifi-h span{ font-size:11.5px; color:var(--gold); font-weight:600; letter-spacing:.08em; }
+  .wifi-loc{ font-size:12.5px; color:var(--muted); margin:4px 0 10px; }
+  .wifi-row{ display:flex; align-items:center; gap:10px; padding:9px 10px; border-radius:12px; background:rgba(17,9,6,.42); border:1px solid rgba(255,255,255,.16); margin-top:6px; }
+  .wifi-row .k{ font-size:11.5px; color:var(--muted); width:66px; flex-shrink:0; }
+  .wifi-row .v{ flex:1; font-family:'Chakra Petch'; font-weight:700; font-size:16px; color:#fff; letter-spacing:.02em; word-break:break-all; }
+  .wifi-row .copy{ flex-shrink:0; border:1px solid rgba(255,209,102,.6); background:none; color:var(--gold); border-radius:9px; padding:6px 10px; font-family:'Chakra Petch'; font-weight:700; font-size:12px; cursor:pointer; }
   .sec-h{ font-family:'Chakra Petch'; font-weight:700; font-size:12px; letter-spacing:.24em; color:var(--gold); text-transform:uppercase; margin:20px 0 10px; }
   .task{ display:flex; align-items:center; gap:13px; width:100%; text-align:left; padding:14px; border-radius:17px; cursor:pointer; color:#fff; font-family:inherit; margin-bottom:10px; }
   .task.locked{ opacity:.82; }
@@ -128,6 +136,8 @@
   .stepper button.ok{ color:var(--ok); border-color:rgba(56,242,155,.45); }
   .stepper-laser{ height:3px; border-radius:3px; background:rgba(255,255,255,.18); overflow:hidden; margin-bottom:6px; }
   .stepper-laser i{ display:block; height:100%; background:var(--laser); box-shadow:0 0 10px #FF7A00; transition:width .35s; }
+  .part-intro{ padding:14px 16px; border-radius:16px; margin-top:12px; font-size:13.5px; line-height:1.65; border-color:rgba(255,209,102,.55); }
+  .part-intro b{ color:var(--gold); }
   .draft-note{ font-size:12px; color:var(--muted); display:flex; align-items:center; gap:6px; min-height:18px; }
   .qcard{ padding:16px; border-radius:18px; margin-top:12px; }
   .qcard.miss{ border-color:#FFB4A6; box-shadow:0 0 0 2px rgba(255,140,120,.45); }
@@ -147,6 +157,14 @@
   .seg button{ flex:1; padding:13px 14px; border-radius:12px; border:1px solid rgba(255,255,255,.28); background:rgba(17,9,6,.4); color:var(--muted); font-weight:600; font-size:14.5px; cursor:pointer; font-family:'IBM Plex Sans Thai'; text-align:left; line-height:1.4; }
   .seg:not(.col) button{ text-align:center; }
   .cbx button::before{ content:'☐'; margin-right:8px; } .cbx button.sel::before{ content:'☑'; }
+  .vote-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:8px; }
+  .vote-grid button{ position:relative; padding:12px 4px 10px; border-radius:14px; cursor:pointer; color:#fff; text-align:center;
+    background:rgba(17,9,6,.45); border:1.5px solid rgba(255,255,255,.28); font-family:'Chakra Petch'; transition:transform .12s; }
+  .vote-grid button:active{ transform:scale(.94); }
+  .vote-grid button b{ display:block; font-size:22px; line-height:1.1; } .vote-grid button span{ font-size:10.5px; letter-spacing:.14em; color:var(--muted); }
+  .vote-grid button.sel{ background:var(--obsidian); border-color:var(--gold); color:var(--gold); box-shadow:0 0 16px rgba(255,122,0,.55); }
+  .vote-grid button.sel::after{ content:'✓'; position:absolute; top:4px; right:7px; font-size:12px; color:var(--ok); }
+  .vote-grid button.saving::after{ content:'⏳'; color:#fff; }
   .vote-ok{ margin-top:8px; font-size:13px; color:var(--muted); } .vote-ok.saved{ color:var(--ok); }
   .nav-row{ display:flex; gap:10px; margin-top:18px; } .nav-row .btn-ghost{ width:auto; flex:0 0 auto; padding:14px 18px; }
   .nav-row .btn-cta{ flex:1; }
@@ -282,7 +300,7 @@ function screenLanding(){
     </div>
     <p class="desc">เช็คอิน · เข้ากลุ่ม OpenChat · ทำ Mission สะสมแสตมป์ 3 ดวง เพื่อรับ <b style="color:#fff">E-Certificate Season 2</b></p>
     <div class="steps">
-      <div class="step-row glass"><div class="num">01</div><div><div class="st">Check-in &amp; OpenChat</div><div class="ss">ค้นหาด้วยชื่อจริง ชื่อเล่น หรือเบอร์ 4 ตัวท้าย</div></div></div>
+      <div class="step-row glass"><div class="num">01</div><div><div class="st">Check-in &amp; OpenChat</div><div class="ss">ใช้แค่เบอร์โทร 4 ตัวท้าย</div></div></div>
       <div class="step-row glass"><div class="num">02</div><div><div class="st">Mission 1–3</div><div class="ss">ตอบสั้น ๆ ระบบเซฟร่างให้อัตโนมัติ</div></div></div>
       <div class="step-row glass"><div class="num">03</div><div><div class="st">E-Certificate</div><div class="ss">ครบ 3 แสตมป์ บันทึกลงรูปภาพได้ในแตะเดียว</div></div></div>
     </div>
@@ -295,51 +313,51 @@ function screenLanding(){
   document.getElementById('guideBtn').onclick = () => window.open('guide.html', '_blank');
   NNext.setTips([
     { text: 'สวัสดีครับ! ผม <b>N\'NEXT</b> ไกด์ประจำ AI NEXT Season 2 🎧 กด <b>เริ่มลงทะเบียน</b> ได้เลย', mood: 'happy' },
-    { text: 'ลืมชื่อที่ลงทะเบียน? พิมพ์ <b>ชื่อเล่น</b> หรือ <b>เบอร์โทร 4 ตัวท้าย</b> แทนได้นะ', mood: 'idle' },
+    { text: 'เช็คอินง่ายมาก — ใช้แค่ <b>เบอร์โทร 4 ตัวท้าย</b> ที่ใช้สมัครเท่านั้น 📱', mood: 'idle' },
     { text: 'เปิดลิงก์นี้ใน <b>Safari / Chrome</b> จะดีที่สุด ระบบจะจำคุณได้ตลอดทั้งวัน', mood: 'idle' }
   ]);
   setTimeout(() => { if (screen === 'landing') NNext.nextTip(); }, 700);
 }
 
-/* ================= CHECK-IN ================= */
+/* ================= CHECK-IN (เบอร์โทร 4 ตัวท้ายเท่านั้น) ================= */
 function screenCheckin(){
   stopAllPolls();
   shell(`
     <button class="back" id="backBtn">${I.back}ย้อนกลับ</button>
     <h2 class="t">เช็คอิน</h2>
-    <p class="sub-en">Find your passport</p>
-    <p class="desc">พิมพ์อย่างใดอย่างหนึ่งตามที่ลงทะเบียนไว้</p>
-    <div class="hint-chips"><span>ชื่อจริง</span><span>ชื่อเล่น</span><span>เบอร์โทร 4 ตัวท้าย</span></div>
-    <input class="field mt2" id="nameInput" placeholder="เช่น ปิยาภา · แป้ง · 1111" autocomplete="off" enterkeyhint="search">
+    <p class="sub-en">Phone · last 4 digits</p>
+    <p class="desc">กรอก <b style="color:#fff">เบอร์โทร 4 ตัวท้าย</b> ที่ใช้ตอนสมัคร</p>
+    <input class="field mt2 pin" id="nameInput" type="tel" inputmode="numeric" pattern="[0-9]*" maxlength="12" placeholder="• • • •" autocomplete="off" enterkeyhint="go">
     ${checkinError ? `<p class="err">${esc(checkinError)}</p>` : ''}
-    <button class="btn-cta mt2" id="submitBtn">ค้นหา &amp; ยืนยัน ${I.arrow}</button>
+    <button class="btn-cta mt2" id="submitBtn">ค้นหาพาสปอร์ต ${I.arrow}</button>
+    <p style="font-size:12.5px;color:var(--muted);text-align:center;margin-top:14px">ไม่มีเบอร์ในระบบ หรือเปลี่ยนเบอร์แล้ว? ติดต่อเจ้าหน้าที่ที่จุดลงทะเบียน</p>
   `, false);
   document.getElementById('backBtn').onclick = () => go('landing', screenLanding);
   document.getElementById('submitBtn').onclick = doCheckin;
   const inp = document.getElementById('nameInput');
+  inp.addEventListener('input', () => { inp.value = inp.value.replace(/[^\d]/g, ''); });
   inp.addEventListener('keydown', e => { if (e.key === 'Enter') doCheckin(); });
   setTimeout(() => inp.focus(), 250);
 }
 async function doCheckin(){
-  const val = document.getElementById('nameInput').value.trim();
-  if (!val) { checkinError = 'กรุณากรอกชื่อจริง ชื่อเล่น หรือเบอร์ 4 ตัวท้าย'; screenCheckin(); return; }
-  const digits = val.replace(/\D/g, '');
-  if (/^\d+$/.test(val.replace(/[\s-]/g, '')) && digits.length !== 4 && digits.length < 9) { checkinError = 'ถ้าค้นหาด้วยเบอร์ ให้พิมพ์ 4 ตัวท้ายนะ'; screenCheckin(); return; }
-  const q = /^\d{9,}$/.test(digits) && /^[\d\s-]+$/.test(val) ? digits.slice(-4) : val;   // พิมพ์เบอร์เต็มมาก็ใช้ 4 ตัวท้ายให้
+  const digits = document.getElementById('nameInput').value.replace(/\D/g, '');
+  if (digits.length !== 4 && digits.length < 9) { checkinError = 'กรุณากรอกเบอร์โทร 4 ตัวท้าย (ตัวเลข 4 หลัก)'; screenCheckin(); return; }
+  const q = digits.slice(-4);                     // พิมพ์เบอร์เต็มมาก็ใช้ 4 ตัวท้ายให้
   go('validating', screenValidating); showLoading('กำลังสแกนรายชื่อ…');
-  const res = await callApi('checkin', { name: q, query: q });
+  const res = await callApi('checkin', { phone: q, query: q });
   hideLoading();
   if (screen !== 'validating') return;
   if (!res.success) {
     if (res.reason === 'checkin_closed') { checkinError = 'ยังไม่เปิดให้เช็คอิน — รอประกาศจากทีมงาน'; go('checkin', screenCheckin); return; }
-    if (res.reason === 'not_found') { go('notfound', () => screenNotfound(val)); return; }
+    if (res.reason === 'not_found') { go('notfound', () => screenNotfound(q)); return; }
+    if (res.reason === 'need_last4') { checkinError = 'กรุณากรอกเบอร์โทร 4 ตัวท้าย'; go('checkin', screenCheckin); return; }
     checkinError = 'เครือข่ายไม่เสถียร ลองอีกครั้งนะ'; go('checkin', screenCheckin); return;
   }
   if (res.multiple) { go('choose', () => screenChoose(res.people)); return; }
   applyProfile(res);
 }
 function applyProfile(res){
-  setProfile({ attendeeId: res.attendeeId, runNo: res.runNo, firstName: res.firstName, lastName: res.lastName, nick: res.nick, team: res.team, menu: res.menu, group: res.group });
+  setProfile({ attendeeId: res.attendeeId, runNo: res.runNo, firstName: res.firstName, lastName: res.lastName, nick: res.nick, team: res.team, group: res.group, certName: res.certName, isMentor: !!res.isMentor });
   latestStatus = res;
   if (!res.checkedIn) go('gate', screenGate); else go('hub', screenHub);
 }
@@ -349,11 +367,11 @@ function screenValidating(){
       <div><h2 class="t">กำลังสแกนรายชื่อ…</h2><p class="sub-en">Scanning roster</p></div></div>`, false);
 }
 function screenNotfound(input){
-  NNext.say('ไม่เจอเลย 🥲 ลองพิมพ์ <b>ชื่อเล่น</b> หรือ <b>เบอร์ 4 ตัวท้าย</b> ดูนะ', { mood: 'idle' });
+  NNext.say('ไม่เจอเบอร์นี้ 🥲 เช็คว่าเป็น <b>เบอร์ที่ใช้สมัคร</b> แล้วลองอีกครั้งนะ', { mood: 'idle' });
   shell(`
     <div style="font-size:54px;margin:8px 0">🛰️</div>
     <h2 class="t">ไม่พบในรายชื่อ</h2>
-    <p class="desc">"${esc(input)}" ยังไม่ตรงกับใครในระบบ — ลองค้นหาด้วยชื่อเล่น หรือเบอร์โทร 4 ตัวท้าย หรือให้เจ้าหน้าที่ช่วยที่จุดลงทะเบียน</p>
+    <p class="desc">ไม่พบเบอร์ที่ลงท้ายด้วย <b style="color:#fff">${esc(input)}</b> — ลองเบอร์ที่ใช้ตอนสมัคร หรือให้เจ้าหน้าที่ช่วยที่จุดลงทะเบียน</p>
     <div style="flex:1"></div>
     <button class="btn-cta" id="retryBtn">ลองอีกครั้ง · Try again ${I.arrow}</button>
     <a class="link-sm" href="admin.html">${I.lock} เจ้าหน้าที่ · Admin login</a>`, false);
@@ -365,8 +383,8 @@ function screenChoose(people){
     <button class="back" id="cBack">${I.back}ย้อนกลับ</button>
     <h2 class="t">คุณคือใคร?</h2>
     <p class="sub-en">Multiple matches</p>
-    <p class="desc" style="margin-bottom:12px">พบ ${people.length} คนที่ตรงกับคำค้นหา — แตะเลือกชื่อของคุณ</p>
-    ${people.map((p, i) => `<button class="pick glass mt" data-i="${i}"><div style="flex:1"><div class="pn">คุณ${esc(p.nick)}</div><div class="ps">${esc(p.name)} · ${esc(p.team || '')}${p.runNo ? ' · ' + esc(p.runNo) : ''}</div></div>${I.arrow}</button>`).join('')}
+    <p class="desc" style="margin-bottom:12px">มี ${people.length} คนที่เบอร์ลงท้ายเหมือนกัน — แตะเลือกชื่อของคุณ</p>
+    ${people.map((p, i) => `<button class="pick glass mt" data-i="${i}"><div style="flex:1"><div class="pn">คุณ${esc(p.nick)}</div><div class="ps">${esc(p.name)} · ${esc(AINEXT.teamLabel(p.team))}</div></div>${I.arrow}</button>`).join('')}
   `, false);
   document.getElementById('cBack').onclick = () => go('checkin', screenCheckin);
   people.forEach((p, i) => { document.querySelector(`[data-i="${i}"]`).onclick = () => pickPerson(p.attendeeId); });
@@ -414,6 +432,23 @@ function screenGate(){
   };
 }
 
+/* ================= Wi-Fi ประจำกลุ่ม ================= */
+function wifiCard(w){
+  if (!w) return `<div class="wifi glass"><div class="wifi-h">📶 Wi-Fi ประจำกลุ่ม</div><div style="font-size:13px;color:var(--muted)">จะแสดงหลังเช็คอินเรียบร้อย</div></div>`;
+  return `<div class="wifi glass">
+    <div class="wifi-h">📶 Wi-Fi ประจำกลุ่ม <span>${esc(w.router)}</span></div>
+    <div class="wifi-loc">📍 ${esc(w.location)}</div>
+    <div class="wifi-row"><span class="k">ชื่อ Wi-Fi</span><span class="v">${esc(w.ssid)}</span><button class="copy" data-copy="${esc(w.ssid)}">คัดลอก</button></div>
+    <div class="wifi-row"><span class="k">Password</span><span class="v">${esc(w.password)}</span><button class="copy" data-copy="${esc(w.password)}">คัดลอก</button></div>
+  </div>`;
+}
+function bindWifi(){
+  document.querySelectorAll('[data-copy]').forEach(b => b.onclick = async () => {
+    try { await navigator.clipboard.writeText(b.dataset.copy); } catch (e) { const t = document.createElement('textarea'); t.value = b.dataset.copy; document.body.appendChild(t); t.select(); try { document.execCommand('copy'); } catch (x) {} t.remove(); }
+    b.textContent = '✓ คัดลอกแล้ว'; vibrate(15); setTimeout(() => { b.textContent = 'คัดลอก'; }, 1600);
+  });
+}
+
 /* ================= WELCOME KIT ================= */
 function screenKit(){
   const p = getProfile();
@@ -431,10 +466,11 @@ function screenKit(){
         <div><div class="l">Group</div><div class="v">${p.group ? 'G' + p.group : '—'}</div></div>
       </div>
     </div>
-    <div class="lunch glass"><span class="ic">🍱</span><span style="font-size:13.5px;line-height:1.45">เมนูอาหารกลางวันของคุณ<br><b style="color:var(--gold)">${esc(p.menu || 'รอยืนยันหน้างาน')}</b></span></div>
+    ${wifiCard((latestStatus || {}).wifi)}
     <div style="flex:1"></div>
     <button class="btn-cta mt2" id="toHubBtn">เปิด NEXT Passport ${I.arrow}</button>`, false);
   setTimeout(() => burstAt(document.getElementById('kitRing'), 26), 300);
+  bindWifi();
   document.getElementById('toHubBtn').onclick = () => go('hub', screenHub);
 }
 
@@ -449,8 +485,8 @@ function hubTips(){
   const p = getProfile() || {}, st = latestStatus || {}, d = st.done || {}, cnt = (d.m1 ? 1 : 0) + (d.m2 ? 1 : 0) + (d.m3 ? 1 : 0);
   const openN = [1, 2, 3].find(n => st['mission' + n + '_open'] && !d['m' + n]);
   const tips = [
-    { text: `สวัสดีคุณ<b>${esc(nick(p))}</b>! คุณอยู่ <b>${esc(p.team || '—')}</b>${p.group ? ' (Group ' + p.group + ')' : ''} — สะสมแล้ว <b>${cnt}/3</b> แสตมป์`, mood: 'happy' },
-    { text: `🍱 เมนูกลางวันของคุณคือ <b>${esc(p.menu || 'รอยืนยันหน้างาน')}</b> โชว์หน้านี้ที่จุดรับอาหารได้เลย`, mood: 'idle' },
+    { text: `สวัสดีคุณ<b>${esc(nick(p))}</b>! คุณอยู่ <b>${esc(AINEXT.teamLabel(p.team))}</b>${p.group ? ' (Group ' + p.group + ')' : ''} — สะสมแล้ว <b>${cnt}/3</b> แสตมป์`, mood: 'happy' },
+    st.wifi ? { text: `📶 Wi-Fi ของกลุ่มคุณคือ <b>${esc(st.wifi.ssid)}</b> · รหัส <b>${esc(st.wifi.password)}</b> (${esc(st.wifi.location)}) — กดคัดลอกได้ที่การ์ด Wi-Fi`, mood: 'idle' } : { text: '📶 Wi-Fi ของกลุ่มจะแสดงในการ์ด Wi-Fi ใต้พาสปอร์ต', mood: 'idle' },
     openN ? { text: `Mission ${openN} เปิดแล้ว! แตะการ์ด <b>ทำเลย</b> ได้เลย ⚡`, mood: 'happy' } : { text: 'Mission ถัดไปยังไม่เปิด — หน้านี้จะอัปเดตเองเมื่อทีมงานปลดล็อก', mood: 'idle' },
     { text: 'ตอบ Mission ไปครึ่งทางแล้วออกจากหน้าไม่ต้องกลัว — ผม<b>เซฟร่างให้อัตโนมัติ</b> 💾', mood: 'idle' },
     { text: 'ครบ 3 แสตมป์ + ทีมงานประกาศ → กดปุ่ม 🎖 ด้านบนเพื่อบันทึก <b>E-Certificate</b>', mood: 'happy' }
@@ -509,11 +545,12 @@ function renderHub(st){
       <div class="laser"></div>
       <div class="meta">
         <div><div class="l">ID</div><div class="v">${esc(p.runNo || p.attendeeId)}</div></div>
-        <div><div class="l">Team · Group</div><div class="v">${esc((p.team || '—').replace('Team ', 'T-'))}${p.group ? ' · G' + p.group : ''}</div></div>
-        <div><div class="l">Lunch</div><div class="v">${esc(p.menu || '—')}</div></div>
+        <div><div class="l">Team · Group</div><div class="v">${esc(p.team || '—')}${p.group ? ' · G' + p.group : ''}</div></div>
+        <div><div class="l">Wi-Fi Zone</div><div class="v">${st.wifi ? esc((st.wifi.location.match(/Zone\s*\d+/i) || [st.wifi.router])[0]) : '—'}</div></div>
       </div>
       <div class="rings">${rings}</div>
     </div>
+    ${wifiCard(st.wifi)}
     <div class="sec-h">⚡ Missions</div>
     ${tasks}
     <div style="flex:1"></div>
@@ -521,6 +558,7 @@ function renderHub(st){
     <button class="btn-ghost mt" id="signOutBtn">ออกจากระบบ · Sign out</button>
   `, true);
   document.getElementById('barDone').textContent = cnt + '/3';
+  bindWifi();
   document.querySelectorAll('[data-m]').forEach(el => {
     const n = Number(el.dataset.m); if (done['m' + n]) return;
     el.onclick = () => st['mission' + n + '_open'] ? openMission(n) : startCooldown(n);
@@ -603,9 +641,9 @@ const FORMS = {
   2: { parts: [{ name: 'Mission 2', items: FORM_SESSION }] },
   3: { parts: [
     { key: 'A', name: 'Part A', label: 'Challenge & Learning', items: [
-      { k: 'vote', t: 'vote', q: 'คุณชอบผลงานทีมใดมากที่สุด' },
-      { k: 'q2', t: 'text', q: 'เหตุผลที่คุณเลือกทีมนี้คืออะไร' },
-      { k: 'q3', t: 'text', q: 'สิ่งสำคัญที่สุดที่คุณได้เรียนรู้จากการทำงานร่วมกับคนต่างสายอาชีพคืออะไร' },
+      { k: 'vote', t: 'vote', q: 'คุณชอบผลงานกลุ่มใดมากที่สุด', hint: 'แตะเลือกได้เลย — ระบบบันทึกโหวตทันที และเปลี่ยนใจได้จนกว่าจะกดส่ง' },
+      { k: 'q2', t: 'text', q: 'เหตุผลที่คุณเลือกกลุ่มนี้คืออะไร' },
+      { k: 'q3', t: 'text', q: 'สิ่งสำคัญที่สุดที่คุณได้เรียนรู้จากการทำงานร่วมกับคนในสายงาน Marketing คืออะไร' },
       { k: 'q4', t: 'text', q: 'หลังจบงาน คุณคิดว่าจะนำสิ่งใดไปใช้กับงานจริงเป็นอันดับแรก' },
       { k: 'q5', t: 'scale5', q: 'AI NEXT Challenge ช่วยให้คุณเชื่อมสิ่งที่เรียนทั้งวันได้มากน้อยเพียงใด', lo: '1 = ยังเชื่อมโยงไม่ได้', hi: '5 = เชื่อมโยงได้ชัดเจนมาก' },
       { k: 'q6', t: 'text', optional: true, q: 'ขอหนึ่งคำชื่นชมหรือ Feedback ให้สมาชิกในทีมของคุณ' }
@@ -621,14 +659,16 @@ const FORMS = {
       { k: 'q13', t: 'text', q: 'สิ่งที่ควรปรับปรุงมากที่สุดในครั้งต่อไปคืออะไร' },
       { k: 'q14', t: 'text', optional: true, q: 'หากมีการจัด AI NEXT ครั้งถัดไป คุณอยากให้ใครมาเป็น Speaker และเพราะอะไร', hint: 'ระบุชื่อบุคคล หรือสายความเชี่ยวชาญก็ได้ เช่น AI for Business, AI Agent, Data, Marketing, HR, Finance หรือ Technology' }
     ] },
-    { key: 'C', name: 'Part C', label: 'Meetup & Community', items: [
-      { k: 'q15', t: 'radio', q: 'คุณสนใจเข้าร่วม AI NEXT Meetup หลังจบ Bootcamp หรือไม่', opts: ['สนใจมาก และต้องการเข้าร่วม', 'สนใจ ขอรับรายละเอียดก่อน', 'อาจสนใจ ขึ้นอยู่กับหัวข้อและวันเวลา', 'ยังไม่แน่ใจ', 'ไม่สนใจในขณะนี้'] },
-      { k: 'q16', t: 'checkbox', optional: true, other: true, q: 'คุณสนใจ Meetup หัวข้อใดมากที่สุด (เลือกได้หลายข้อ)', opts: ['AI Tools, Prompt และ Workflow ที่ใช้กับงานจริง', 'AI Product และ Business Case', 'AI for Career ตามสายอาชีพ เช่น Marketing, HR, Finance, Sales และ Technology', 'Networking และการแลกเปลี่ยนกับคนต่างสายอาชีพ', 'Career และโอกาสร่วมงาน'] },
-      { k: 'q17', t: 'radio', q: 'ใน Meetup ครั้งต่อไป คุณสนใจมีส่วนร่วมแบบใด', opts: ['เข้าร่วมฟังและ Networking', 'แชร์ Use Case แบบสั้น', 'ยังไม่แน่ใจ'] },
-      { k: 'q18', t: 'text', optional: true, q: 'คุณมี Use Case หรือหัวข้อใดที่อยากนำมาแชร์กับ Community หรือไม่' },
-      { k: 'q19', t: 'checkbox', optional: true, q: 'คุณสะดวกเข้าร่วม Meetup ช่วงใดมากที่สุด (เลือกได้หลายข้อ)', opts: ['วันธรรมดาหลังเลิกงาน', 'วันเสาร์', 'วันอาทิตย์'] },
-      { k: 'q20', t: 'radio', q: 'คุณต้องการเข้าร่วม LINE Group สำหรับ AI NEXT Meetup และ Community หรือไม่', noteHtml: 'กดเข้าร่วม LINE Group ได้ที่นี่: <a href="' + C.LINE_MEETUP + '" target="_blank" rel="noopener">คลิกเพื่อเข้ากลุ่ม ↗</a> — กลับมาคำตอบยังอยู่ครบ 💾', opts: ['เข้าร่วมแล้ว', 'ต้องการเข้าร่วม', 'ไม่ต้องการเข้าร่วม'] },
-      { k: 'q21', t: 'radio', optional: true, q: 'หลังกดเข้าร่วม LINE Group แล้ว กรุณาพิมพ์ชื่อเล่นและ Team Number ในกลุ่ม เพื่อให้เพื่อน ๆ ทราบ', opts: ['แนะนำตัวในกลุ่มแล้ว', 'จะเข้าไปแนะนำตัวภายหลัง', 'ไม่ได้เข้าร่วม LINE Group'] }
+    { key: 'C', name: 'Part C', label: 'Meetup & Community',
+      intro: '<b>What is AI NEXT Meetup?</b><br>AI NEXT Meetup คือ Community ที่ต่อยอดหลังจบ Bootcamp — นัดเจอกันแบบสบาย ๆ เพื่ออัปเดตเครื่องมือ AI ใหม่ ๆ แชร์ Use Case จริงจากการทำงาน และ Networking กับคนสาย Marketing, Data และ Business ที่สนใจ AI เหมือนกัน<br><span style="opacity:.85">ตอนนี้อยู่ระหว่างวางแผน — คำตอบของคุณจะช่วยกำหนดรูปแบบงาน ลองตอบแบบ <b>"ถ้าสมมติว่ามีงานนี้…"</b> ได้เลย</span>',
+      items: [
+      { k: 'q15', t: 'radio', q: 'ถ้าสมมติว่ามีงาน AI NEXT Meetup หลังจบ Bootcamp คุณจะสนใจเข้าร่วมไหม', opts: ['สนใจมาก และจะเข้าร่วมแน่นอน', 'สนใจ แต่ขอดูรายละเอียดก่อน', 'อาจเข้าร่วม ขึ้นอยู่กับหัวข้อและวันเวลา', 'ยังไม่แน่ใจ', 'ไม่สนใจในขณะนี้'] },
+      { k: 'q16', t: 'checkbox', optional: true, other: true, q: 'ถ้ามีงาน Meetup นี้ คุณอยากให้มีหัวข้อไหนบ้าง (เลือกได้หลายข้อ)', opts: ['AI Tools, Prompt และ Workflow ที่ใช้กับงานจริง', 'AI Product และ Business Case', 'AI for Career ตามสายอาชีพ เช่น Marketing, HR, Finance, Sales และ Technology', 'Networking และการแลกเปลี่ยนกับคนต่างสายอาชีพ', 'Career และโอกาสร่วมงาน'] },
+      { k: 'q17', t: 'radio', q: 'ถ้ามีงาน Meetup นี้ คุณอยากมีส่วนร่วมแบบไหน', opts: ['เข้าร่วมฟังและ Networking', 'แชร์ Use Case แบบสั้น', 'ยังไม่แน่ใจ'] },
+      { k: 'q18', t: 'text', optional: true, q: 'ถ้าได้ขึ้นแชร์ในงาน Meetup คุณมี Use Case หรือหัวข้อไหนที่อยากเล่าให้ Community ฟัง' },
+      { k: 'q19', t: 'checkbox', optional: true, q: 'ถ้ามีงาน Meetup นี้ ช่วงเวลาไหนที่คุณสะดวกมาร่วมมากที่สุด (เลือกได้หลายข้อ)', opts: ['วันธรรมดาหลังเลิกงาน', 'วันเสาร์', 'วันอาทิตย์'] },
+      { k: 'q20', t: 'radio', q: 'ถ้ามี LINE Group สำหรับ AI NEXT Meetup & Community คุณอยากเข้าร่วมไหม', noteHtml: 'เข้าร่วม LINE Group ได้ที่นี่: <a href="' + C.LINE_MEETUP + '" target="_blank" rel="noopener">คลิกเพื่อเข้ากลุ่ม ↗</a> — กลับมาคำตอบยังอยู่ครบ 💾', opts: ['เข้าร่วมแล้ว', 'อยากเข้าร่วม', 'ยังไม่เข้าร่วมตอนนี้'] },
+      { k: 'q21', t: 'radio', optional: true, q: 'ถ้าเข้ากลุ่มแล้ว ช่วยพิมพ์ชื่อเล่นและ Team Number แนะนำตัวในกลุ่ม เพื่อให้เพื่อน ๆ รู้จักนะ', opts: ['แนะนำตัวในกลุ่มแล้ว', 'จะเข้าไปแนะนำตัวภายหลัง', 'ไม่ได้เข้าร่วม LINE Group'] }
     ] }
   ] }
 };
@@ -660,6 +700,7 @@ function openMission(n, partIdx){
   const st = latestStatus || {};
   if (n === 3 && st.myVote) answers.vote = st.myVote;           // โหวตบนเซิร์ฟเวอร์สำคัญกว่าร่าง
   if (n === 3 && answers.vote && (st.voteOptions || []).indexOf(answers.vote) < 0) delete answers.vote;
+  voteSaved = null; votePending = null;
   screen = 'mission';
   writeLS(RESUME_KEY, { mission: n, part: curPart });
   renderMission();
@@ -675,9 +716,10 @@ function renderMission(){
     const a = answers[it.k];
     if (it.t === 'vote') {
       const opts = st.voteOptions || [];
-      if (!opts.length) h += `<div class="err">ยังไม่มีทีมให้โหวตในกลุ่มของคุณ</div>`;
-      else h += `<select class="field" id="voteSel"><option value="">— เลือกทีมใน Group ${st.group || '-'} (ยกเว้นทีมคุณ) —</option>${opts.map(t => `<option value="${esc(t)}" ${t === a ? 'selected' : ''}>${esc(t)}</option>`).join('')}</select>
-        <div id="voteMsg" class="vote-ok ${st.myVote ? 'saved' : ''}">${st.myVote ? '✓ บันทึกโหวตแล้ว: <b>' + esc(st.myVote) + '</b> · เปลี่ยนใจได้จนกว่าจะส่ง' : 'เลือกแล้วบันทึกเรียลไทม์ทันที · เปลี่ยนได้ภายหลัง'}</div>`;
+      if (!opts.length) h += `<div class="err">ยังไม่มีกลุ่มให้โหวตใน Group ของคุณ</div>`;
+      else h += `<div class="qhint" style="margin-top:-2px">คุณอยู่ <b style="color:#fff">${esc(AINEXT.teamLabel(st.team))}</b> · โหวตได้เฉพาะกลุ่มใน <b style="color:#fff">Group ${st.group} (${st.group === 1 ? 'A1–A5' : 'B1–B5'})</b> ยกเว้นกลุ่มตัวเอง</div>
+        <div class="vote-grid" id="voteGrid">${opts.map(t => `<button type="button" data-vote="${esc(t)}" class="${t === (st.myVote || a) ? 'sel' : ''}"><b>${esc(t)}</b><span>Team</span></button>`).join('')}</div>
+        <div id="voteMsg" class="vote-ok ${st.myVote ? 'saved' : ''}">${st.myVote ? '✓ บันทึกโหวตแล้ว: <b>Team ' + esc(st.myVote) + '</b> · เปลี่ยนใจได้จนกว่าจะส่ง' : 'แตะเลือก → บันทึกทันที · เปลี่ยนได้ภายหลัง'}</div>`;
     }
     else if (it.t === 'text') h += `<textarea class="field" data-k="${it.k}" placeholder="พิมพ์คำตอบ… (เซฟอัตโนมัติ)">${esc(a || '')}</textarea>`;
     else if (it.t === 'scale5' || it.t === 'scale0_10') {
@@ -711,6 +753,7 @@ function renderMission(){
     <p class="desc" style="margin:4px 0 0">${esc(multi ? part.label : meta.sub)}</p>
     ${stepper}
     <div class="draft-note" id="draftNote">💾 ระบบเซฟร่างให้อัตโนมัติทุกครั้งที่ตอบ</div>
+    ${part.intro ? `<div class="glass part-intro">${part.intro}</div>` : ''}
     <div id="mBody">${h}</div>
     <div id="mErr"></div>
     <div class="nav-row">
@@ -726,7 +769,7 @@ function bindMission(){
   body.querySelectorAll('[data-seg]').forEach(b => b.onclick = () => { answers[b.dataset.seg] = b.textContent; markSel(b); touch(); clearMiss(b); });
   body.querySelectorAll('[data-cbx] button').forEach(b => b.onclick = () => { b.classList.toggle('sel'); recomputeCbx(b.parentNode.dataset.cbx); });
   body.querySelectorAll('[data-other]').forEach(i => i.addEventListener('input', () => recomputeCbx(i.dataset.other)));
-  const vs = document.getElementById('voteSel'); if (vs) vs.onchange = () => onVoteChange(vs);
+  document.querySelectorAll('[data-vote]').forEach(b => b.onclick = () => onVotePick(b.dataset.vote));
   document.getElementById('mBack').onclick = () => { saveDraft(); leaveMission(); };
   document.getElementById('mNext').onclick = nextOrSubmit;
   const prev = document.getElementById('mPrev'); if (prev) prev.onclick = () => { saveDraft(); curPart--; renderMission(); };
@@ -762,19 +805,36 @@ function showMissing(miss){
   const first = document.querySelector('.qcard.miss'); if (first) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
   NNext.say(`เหลืออีกนิด! ยังไม่ได้ตอบข้อ <b>${miss.map(m => m.qn).join(', ')}</b>`, { mood: 'idle' });
 }
-async function onVoteChange(sel){
-  const v = sel.value; if (!v) return;
-  const msg = document.getElementById('voteMsg');
-  showLoading('กำลังบันทึกโหวต…');
-  const res = await callApi('submitVote', { attendeeId: getProfile().attendeeId, vote: v });
-  if (!res.success) {
-    hideLoading();
-    if (msg) { msg.className = 'vote-ok'; msg.textContent = res.reason === 'bad_vote' ? 'กรุณาเลือกทีมในกลุ่มของคุณ' : res.reason === 'mission_closed' ? 'Mission 3 ปิดแล้ว' : 'บันทึกไม่สำเร็จ ลองเลือกใหม่อีกครั้ง'; }
-    return;
+/* โหวตเรียลไทม์: แตะปุ๊บไฮไลต์ทันที + ส่งไปบันทึกเบื้องหลัง; แตะรัว ๆ จะส่งเฉพาะตัวเลือกล่าสุด */
+let voteInflight = false, votePending = null, voteSaved = null;
+function paintVote(team, state){
+  document.querySelectorAll('[data-vote]').forEach(b => { b.classList.toggle('sel', b.dataset.vote === team); b.classList.toggle('saving', b.dataset.vote === team && state === 'saving'); });
+  const msg = document.getElementById('voteMsg'); if (!msg) return;
+  if (state === 'saving') { msg.className = 'vote-ok'; msg.innerHTML = '⏳ กำลังบันทึกโหวต <b>Team ' + esc(team) + '</b>…'; }
+  else if (state === 'saved') { msg.className = 'vote-ok saved'; msg.innerHTML = '✓ บันทึกโหวตแล้ว: <b>Team ' + esc(team) + '</b> · เปลี่ยนใจได้จนกว่าจะส่ง'; }
+}
+function onVotePick(team){
+  if (voteSaved === null) voteSaved = (latestStatus || {}).myVote || '';
+  answers.vote = team; touch(); paintVote(team, 'saving'); vibrate(12);
+  const card = document.querySelector('.qcard[data-q="vote"]'); if (card) card.classList.remove('miss');
+  votePending = team; if (!voteInflight) flushVote();
+}
+async function flushVote(){
+  voteInflight = true;
+  while (votePending) {
+    const team = votePending; votePending = null;
+    const res = await callApi('submitVote', { attendeeId: getProfile().attendeeId, vote: team });
+    if (votePending) continue;                                  // มีการแตะใหม่ระหว่างรอ → ส่งตัวล่าสุดต่อ
+    if (res.success) {
+      latestStatus = res; voteSaved = res.myVote || team; answers.vote = voteSaved; touch(); paintVote(voteSaved, 'saved');
+      NNext.say(`🗳️ บันทึกโหวต <b>Team ${esc(voteSaved)}</b> แล้ว — ขึ้นจอ Live Vote ทันที!`, { mood: 'happy', hold: 2500 });
+    } else {
+      const why = res.reason === 'bad_vote' ? 'โหวตได้เฉพาะกลุ่มใน Group ของคุณ' : res.reason === 'mission_closed' ? 'Mission 3 ปิดแล้ว' : 'บันทึกไม่สำเร็จ ลองแตะอีกครั้ง';
+      answers.vote = voteSaved || undefined; paintVote(voteSaved, voteSaved ? 'saved' : '');
+      const msg = document.getElementById('voteMsg'); if (msg) { msg.className = 'vote-ok'; msg.textContent = '⚠️ ' + why; }
+    }
   }
-  latestStatus = res; answers.vote = res.myVote || v; touch(); clearMiss(sel);
-  hideLoading(`🗳️ บันทึกโหวต <b>${esc(answers.vote)}</b> แบบเรียลไทม์แล้ว! เปลี่ยนใจได้จนกว่าจะส่ง`, 'happy');
-  if (msg) { msg.className = 'vote-ok saved'; msg.innerHTML = '✓ บันทึกโหวตแล้ว: <b>' + esc(answers.vote) + '</b> · เปลี่ยนใจได้จนกว่าจะส่ง'; }
+  voteInflight = false;
 }
 async function nextOrSubmit(){
   const f = FORMS[curMission], miss = missingIn(curMission, curPart);
@@ -874,7 +934,7 @@ async function drawCert(p, withImages){
   const lg = ctx.createLinearGradient(140, 0, W - 140, 0); lg.addColorStop(0, 'rgba(255,109,0,0)'); lg.addColorStop(.2, '#FF6D00'); lg.addColorStop(.5, '#FFF3D1'); lg.addColorStop(.8, '#FF6D00'); lg.addColorStop(1, 'rgba(255,109,0,0)');
   ctx.save(); ctx.shadowColor = '#FF7A00'; ctx.shadowBlur = 22; ctx.fillStyle = lg; ctx.fillRect(140, 818, W - 280, 5); ctx.restore();
   // name
-  const fullName = (p.firstName + ' ' + (p.lastName || '')).trim();
+  const fullName = (p.certName || (p.firstName + ' ' + (p.lastName || ''))).trim();
   ctx.fillStyle = '#fff'; fitFont(ctx, fullName, 600, '"IBM Plex Sans Thai"', 76, W - 200);
   ctx.save(); ctx.shadowColor = 'rgba(255,122,0,.6)'; ctx.shadowBlur = 20; ctx.fillText(fullName, W / 2, 920); ctx.restore();
   ctx.fillStyle = 'rgba(255,240,228,.86)'; ctx.font = '400 30px "IBM Plex Sans Thai"';
@@ -896,7 +956,7 @@ async function drawCert(p, withImages){
   ctx.strokeStyle = 'rgba(255,255,255,.22)'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(110, 1190); ctx.lineTo(W - 110, 1190); ctx.stroke();
   const today = new Date().toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' });
   ctx.textAlign = 'left'; ctx.fillStyle = 'rgba(255,240,228,.7)'; ctx.font = '600 20px "Chakra Petch"'; spaced(ctx, 'ATTENDEE ID', 110, 1234, 3, 'left');
-  ctx.fillStyle = '#fff'; ctx.font = '700 32px "Chakra Petch"'; ctx.fillText(String(p.runNo || p.attendeeId) + (p.team ? '  ·  ' + p.team : ''), 110, 1274);
+  ctx.fillStyle = '#fff'; ctx.font = '700 32px "Chakra Petch"'; ctx.fillText(String(p.runNo || p.attendeeId) + (p.team ? '  ·  Team ' + p.team : ''), 110, 1274);
   ctx.textAlign = 'right'; ctx.fillStyle = 'rgba(255,240,228,.7)'; ctx.font = '600 20px "Chakra Petch"'; spaced(ctx, 'ISSUED', W - 110, 1234, 3, 'right');
   ctx.fillStyle = '#fff'; ctx.font = '600 30px "IBM Plex Sans Thai"'; ctx.fillText(today, W - 110, 1274);
   return cv;

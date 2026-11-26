@@ -153,8 +153,8 @@ async function exportCSV(){
   if (TAB === 'overview') {
     const r = await callApi('adminList', { password: PASSWORD, query: '' }); if (!r.success) return toast('ดึงข้อมูลไม่สำเร็จ');
     downloadCSV(`ainext-s2-participants-${stamp()}.csv`,
-      ['No', 'Run No', 'ชื่อ-นามสกุล', 'ชื่อเล่น', 'ทีม', 'Group', 'เบอร์', 'เมนู', 'Checked-in', 'OpenChat', 'M1', 'M2', 'M3', 'Cert', 'Vote', 'Cannot Attend', 'Called', 'Tester'],
-      r.items.map(p => [p.attendeeId, p.runNo, p.name, p.nick, p.team, p.group || '', p.phone, p.menu || '', yn(p.checkin), yn(p.openchat), yn(p.m1), yn(p.m2), yn(p.m3), yn(p.cert), p.vote, yn(p.cannotAttend), yn(p.called), yn(p.isTest)]));
+      ['ID', 'Run No', 'ชื่อ-นามสกุล', 'ชื่อเล่น', 'กลุ่ม', 'Group', 'เบอร์', 'SEL', 'บทบาท', 'Checked-in', 'Check-in Time', 'OpenChat', 'M1', 'M2', 'M3', 'Cert', 'Vote', 'Cannot Attend', 'Called', 'Tester'],
+      r.items.map(p => [p.attendeeId, p.runNo, p.name, p.nick, p.team, p.group || '', p.phone, p.sel || '', p.isMentor ? 'พี่เนียน' : 'ผู้เข้าร่วม', yn(p.checkin), p.checkinTime || '', yn(p.openchat), yn(p.m1), yn(p.m2), yn(p.m3), yn(p.cert), p.vote, yn(p.cannotAttend), yn(p.called), yn(p.isTest)]));
   } else if (TAB === 'votes') {
     const r = votesCache || await callApi('adminVotes', { password: PASSWORD }); if (!r.success) return toast('ดึงข้อมูลไม่สำเร็จ');
     const rows = []; [['1', r.group1 || []], ['2', r.group2 || []]].forEach(([g, list]) => list.forEach((x, i) => rows.push([g, i + 1, x.team, x.votes])));
@@ -166,7 +166,7 @@ async function exportCSV(){
     return;
   } else if (TAB === 'certified') {
     const r = await callApi('adminCertified', { password: PASSWORD }); if (!r.success) return toast('ดึงข้อมูลไม่สำเร็จ');
-    downloadCSV(`ainext-s2-certified-${stamp()}.csv`, ['No', 'Run No', 'ชื่อ-นามสกุล', 'ชื่อเล่น', 'ทีม', 'Group'], r.items.map(p => [p.attendeeId, p.runNo, p.name, p.nick, p.team, p.group]));
+    downloadCSV(`ainext-s2-certified-${stamp()}.csv`, ['ID', 'Run No', 'ชื่อบน Certificate', 'ชื่อ-นามสกุล', 'ชื่อเล่น', 'กลุ่ม', 'Group', 'บทบาท'], r.items.map(p => [p.attendeeId, p.runNo, p.certName || p.name, p.name, p.nick, p.team, p.group, p.isMentor ? 'พี่เนียน' : 'ผู้เข้าร่วม']));
   }
   toast('ดาวน์โหลด CSV แล้ว');
 }
@@ -188,7 +188,7 @@ async function renderOverview(){
     <div class="panel glass">
       <div class="toolbar">
         <input id="q" placeholder="ค้นหา ชื่อ / ชื่อเล่น / เลข / ทีม / เบอร์" value="${esc(filterText)}">
-        <select id="fmode"><option value="all">ทั้งหมด</option><option value="checkin">เช็คอินแล้ว</option><option value="nocheckin">ยังไม่เช็คอิน</option><option value="cert">ได้ Cert</option><option value="cannot">มาไม่ได้ (checked-out)</option><option value="test">ผู้ทดสอบ</option></select>
+        <select id="fmode"><option value="all">ทั้งหมด</option><option value="checkin">เช็คอินแล้ว</option><option value="nocheckin">ยังไม่เช็คอิน</option><option value="cert">ได้ Cert</option><option value="cannot">มาไม่ได้ (checked-out)</option><option value="nophone">ไม่มีเบอร์ (ต้องเช็คอินให้)</option><option value="mentor">พี่เนียน</option><option value="test">ผู้ทดสอบ</option></select>
       </div>
       <div class="scroll"><table id="statusTable"></table></div>
     </div>`);
@@ -218,7 +218,7 @@ function cardsHtml(s){
     else { big = count + ' <small>/ ' + s.total + '</small>'; const miss = s.checkin - count; note = miss > 0 ? ('ขาด ' + miss + ' คน') : 'ครบแล้ว'; }
     return `<div class="card glass"><div class="k">${label}</div><div class="v">${big}</div><div class="sub" style="margin-top:8px">${note}</div></div>`;
   }
-  return `<div class="card glass"><div class="k">เช็คอินแล้ว</div><div class="v">${s.checkin} <small>/ ${s.total}</small></div><div class="sub" style="margin-top:8px">Check-out ${s.cannotAttend} คน</div></div>
+  return `<div class="card glass"><div class="k">เช็คอินแล้ว</div><div class="v">${s.checkin} <small>/ ${s.total}</small></div><div class="sub" style="margin-top:8px">Check-out ${s.cannotAttend} · พี่เนียน ${s.mentors || 0} (ไม่นับ)</div></div>
     <div class="card glass"><div class="k">เข้า OpenChat</div><div class="v">${s.openchat} <small>/ ${s.total}</small></div><div class="sub" style="margin-top:8px">โหวตแล้ว ${s.votes} คน</div></div>
     ${missionCard('Mission 1', s.m1, s.mission1_open)}${missionCard('Mission 2', s.m2, s.mission2_open)}${missionCard('Mission 3', s.m3, s.mission3_open)}
     <div class="card glass"><div class="k">ได้ Cert</div><div class="v">${s.cert} <small>/ ${s.total}</small></div><div class="sub" style="margin-top:8px">${s.cert_open ? 'ปล่อยแล้ว' : 'รอปล่อย'}</div></div>`;
@@ -250,17 +250,19 @@ function drawTable(){
   else if (filterMode === 'cert') rows = rows.filter(p => p.cert);
   else if (filterMode === 'cannot') rows = rows.filter(p => p.cannotAttend);
   else if (filterMode === 'test') rows = rows.filter(p => p.isTest);
+  else if (filterMode === 'mentor') rows = rows.filter(p => p.isMentor);
+  else if (filterMode === 'nophone') rows = rows.filter(p => !String(p.phone || '').replace(/\D/g, ''));
   else rows = rows.filter(p => !p.isTest);
   rows.sort((a, b) => { let x = a[sortKey], y = b[sortKey]; if (typeof x === 'boolean') { x = x ? 1 : 0; y = y ? 1 : 0; } x = String(x); y = String(y); return x.localeCompare(y, 'th', { numeric: true }) * sortDir; });
-  const cols = [['runNo', '#'], ['nick', 'ชื่อเล่น / ชื่อ'], ['team', 'ทีม'], ['phone', 'เบอร์'], ['group', 'Group'], ['checkin', 'เช็คอิน'], ['m1', 'M1'], ['m2', 'M2'], ['m3', 'M3'], ['vote', 'โหวต'], ['cert', 'สิทธิ์ CERT'], ['called', 'โทรยืนยัน'], ['x', 'จัดการ']];
+  const cols = [['runNo', '#'], ['nick', 'ชื่อเล่น / ชื่อ'], ['team', 'กลุ่ม'], ['phone', 'เบอร์'], ['group', 'Group'], ['checkin', 'เช็คอิน'], ['m1', 'M1'], ['m2', 'M2'], ['m3', 'M3'], ['vote', 'โหวต'], ['cert', 'สิทธิ์ CERT'], ['called', 'โทรยืนยัน'], ['x', 'จัดการ']];
   let h = '<thead><tr>' + cols.map(c => `<th data-sk="${c[0]}">${c[1]}${sortKey === c[0] ? (sortDir > 0 ? ' ▲' : ' ▼') : ''}</th>`).join('') + '</tr></thead><tbody>';
   if (!rows.length) h += `<tr><td colspan="${cols.length}"><div class="empty">ไม่พบผู้เข้าร่วม</div></td></tr>`;
   rows.forEach(p => {
     const grp = p.group ? `<span class="grp grp${p.group}">G${p.group}</span>` : `<span class="grp grp0">–</span>`;
-    const ci = p.cannotAttend ? `<span class="pill p-red">ไม่มา</span>` : (p.checkin ? `<span class="pill p-green">เช็คอิน</span>` : `<span class="pill p-red">ยังไม่มา</span>`);
+    const ci = p.cannotAttend ? `<span class="pill p-red">ไม่มา</span>` : (p.checkin ? `<span class="pill p-green">เช็คอิน</span>` : `<button class="mini" data-checkin="${esc(p.attendeeId)}" title="เช็คอินให้ (เช่น คนที่ไม่มีเบอร์ในระบบ)">＋ เช็คอินให้</button>`);
     const cert = p.cert ? `<span class="pill p-green">ได้ Cert</span>` : (p.m1 && p.m2 && p.m3 ? `<span class="pill p-gold">รอปล่อย</span>` : `<span class="pill p-gold">รอ ${!p.m1 ? 'M1' : !p.m2 ? 'M2' : 'M3'}</span>`);
     h += `<tr><td class="name">${esc(p.runNo || p.attendeeId)}</td>
-      <td><div class="name">${esc(p.nick)}${p.isTest ? ' <span class="sub">(TEST)</span>' : ''}</div><div class="sub">${esc(p.name)}</div></td>
+      <td><div class="name">${esc(p.nick)}${p.isTest ? ' <span class="sub">(TEST)</span>' : ''}${p.isMentor ? ' <span class="pill p-grey" style="font-size:11px;padding:2px 8px">พี่เนียน</span>' : ''}${p.sel === 'Waitlist' ? ' <span class="sub">· Waitlist</span>' : ''}</div><div class="sub">${esc(p.name)}</div></td>
       <td>${esc(p.team || '—')}</td><td>${esc(p.phone || '—')}</td><td>${grp}</td><td>${ci}</td>
       <td>${pill(p.m1)}</td><td>${pill(p.m2)}</td><td>${pill(p.m3)}</td><td>${p.vote ? esc(p.vote) : '<span class="sub">–</span>'}</td><td>${cert}</td>
       <td><button class="mini ${p.called ? 'called' : ''}" data-called="${esc(p.attendeeId)}">${p.called ? '☎ โทรแล้ว' : '☎ ยังไม่โทร'}</button></td>
@@ -271,21 +273,22 @@ function drawTable(){
   const patchBtn = (attr, field) => tb.querySelectorAll(`[data-${attr}]`).forEach(btn => btn.onclick = async () => {
     const id = btn.dataset[attr], p = listCache.find(x => String(x.attendeeId) === String(id)), nv = !(p && p[field]);
     if (field === 'cannotAttend' && nv && !confirm(`Check-out คุณ${p.nick}? (ไม่นับในยอด และเช็คอินไม่ได้)`)) return;
+    if (field === 'checkin' && !confirm(`เช็คอินให้คุณ${p.nick} (${p.team})?`)) return;
     btn.disabled = true; await callApi('adminUpdateParticipant', { password: PASSWORD, attendeeId: id, patch: { [field]: nv } }); await loadList(); drawTable();
   });
-  patchBtn('checkout', 'cannotAttend'); patchBtn('called', 'called');
+  patchBtn('checkout', 'cannotAttend'); patchBtn('called', 'called'); patchBtn('checkin', 'checkin');
 }
 
 /* ================= VOTES ================= */
 async function renderVotes(){
   const myId = ++renderId;
-  shell(`<div class="two"><div class="panel glass"><h3 class="sec">🏅 Group 1 · อันดับโหวต</h3><div id="g1"></div></div>
-    <div class="panel glass"><h3 class="sec">🏅 Group 2 · อันดับโหวต</h3><div id="g2"></div></div></div>
-    <p class="sub" style="margin-top:12px">นับรวมโหวตของผู้ทดสอบด้วย — รัน cleanupTestData() ก่อนวันงานเพื่อล้าง</p>`);
+  shell(`<div class="two"><div class="panel glass"><h3 class="sec">🏅 Group 1 (A1–A5) · อันดับโหวต</h3><div id="g1"></div></div>
+    <div class="panel glass"><h3 class="sec">🏅 Group 2 (B1–B5) · อันดับโหวต</h3><div id="g2"></div></div></div>
+    <p class="sub" style="margin-top:12px">ไม่นับโหวตของพี่เนียน · นับผู้ทดสอบ (TEST…) ด้วย — รัน cleanupTestData() ก่อนวันงานเพื่อล้าง</p>`);
   function draw(list, el){
     const box = document.getElementById(el); if (!box) return;
     const max = Math.max(1, ...list.map(x => x.votes));
-    box.innerHTML = list.length ? list.map((x, i) => `<div class="rank"><span class="team">${i + 1}. ${esc(x.team)}${i === 0 && x.votes ? ' 👑' : ''}</span><span class="barwrap"><i style="width:${Math.round(x.votes / max * 100)}%"></i></span><span class="num">${x.votes}</span></div>`).join('') : '<div class="empty">ยังไม่มีทีมในกลุ่มนี้</div>';
+    box.innerHTML = list.length ? list.map((x, i) => `<div class="rank"><span class="team">${i + 1}. Team ${esc(x.team)}${i === 0 && x.votes ? ' 👑' : ''}</span><span class="barwrap"><i style="width:${Math.round(x.votes / max * 100)}%"></i></span><span class="num">${x.votes}</span></div>`).join('') : '<div class="empty">ยังไม่มีทีมในกลุ่มนี้</div>';
   }
   async function pull(){ const r = await callApi('adminVotes', { password: PASSWORD }); if (myId !== renderId) return;
     if (!r.success) { if (r.reason === 'bad_password') screenLogin('เซสชันหมดอายุ'); return; } votesCache = r; draw(r.group1 || [], 'g1'); draw(r.group2 || [], 'g2'); liveTick(); }
@@ -319,7 +322,7 @@ async function renderCertified(){
     document.getElementById('ccount').textContent = '· ' + r.items.length + ' คน';
     if (!r.items.length) { tb.innerHTML = '<tbody><tr><td><div class="empty">ยังไม่มีผู้ได้รับ Certificate</div></td></tr></tbody>'; return; }
     tb.innerHTML = '<thead><tr><th>#</th><th>ชื่อเล่น / ชื่อ</th><th>ทีม</th><th>Group</th></tr></thead><tbody>'
-      + r.items.map(p => `<tr><td class="name">${esc(p.runNo || p.attendeeId)}</td><td><div class="name">${esc(p.nick)}</div><div class="sub">${esc(p.name)}</div></td><td>${esc(p.team || '—')}</td><td><span class="grp grp${p.group}">G${p.group || '-'}</span></td></tr>`).join('') + '</tbody>';
+      + r.items.map(p => `<tr><td class="name">${esc(p.runNo || p.attendeeId)}</td><td><div class="name">${esc(p.nick)}${p.isMentor ? ' <span class="sub">(พี่เนียน)</span>' : ''}</div><div class="sub">${esc(p.certName || p.name)}</div></td><td>${esc(p.team || '—')}</td><td><span class="grp grp${p.group}">G${p.group || '-'}</span></td></tr>`).join('') + '</tbody>';
     liveTick();
   }
   await pull(); poll(pull);

@@ -106,8 +106,8 @@
       <div class="s2-metal ttl">Live Vote</div>
       <div class="laser w"></div>
       <div class="race">
-        <div class="rgroup glass"><h3>GROUP 1 <small id="g1sum"></small></h3><div class="lanes" id="g1"></div></div>
-        <div class="rgroup glass"><h3>GROUP 2 <small id="g2sum"></small></h3><div class="lanes" id="g2"></div></div>
+        <div class="rgroup glass"><h3>GROUP 1 · A1–A5 <small id="g1sum"></small></h3><div class="lanes" id="g1"></div></div>
+        <div class="rgroup glass"><h3>GROUP 2 · B1–B5 <small id="g2sum"></small></h3><div class="lanes" id="g2"></div></div>
       </div>
     </section>
   </div>
@@ -155,7 +155,7 @@ function renderMissions(d){
   // keep existing row elements so bars animate between polls
   const order = teams.map(t => t.team).join('|');
   if (box.dataset.order !== order) {
-    box.innerHTML = teams.map((t, i) => `<div class="trow glass" data-team="${esc(t.team)}"><div class="rk">${i + 1}</div><div class="tn">${esc(t.team)}</div><div class="tb"><i style="width:0"></i></div><div class="pc">0%</div><div class="st"></div></div>`).join('');
+    box.innerHTML = teams.map((t, i) => `<div class="trow glass" data-team="${esc(t.team)}"><div class="rk">${i + 1}</div><div class="tn">Team ${esc(t.team)}</div><div class="tb"><i style="width:0"></i></div><div class="pc">0%</div><div class="st"></div></div>`).join('');
     box.dataset.order = order;
   }
   teams.forEach((t, i) => {
@@ -176,7 +176,7 @@ function renderLanes(id, list, sumId){
   list.forEach((x, i) => {
     let lane = box.querySelector(`[data-team="${CSS.escape(x.team)}"]`);
     if (!lane) { lane = document.createElement('div'); lane.className = 'lane'; lane.dataset.team = x.team; lane.style.top = (list.length * rowH) + 'px';
-      lane.innerHTML = `<div class="ln">${esc(x.team)}</div><div class="lb"><i style="width:0"></i></div><div class="lv">0</div>`; box.appendChild(lane); }
+      lane.innerHTML = `<div class="ln">Team ${esc(x.team)}</div><div class="lb"><i style="width:0"></i></div><div class="lv">0</div>`; box.appendChild(lane); }
     requestAnimationFrame(() => { lane.style.top = (i * rowH) + 'px'; lane.querySelector('.lb i').style.width = (x.votes / max * 100) + '%'; });
     lane.classList.toggle('lead', i === 0 && x.votes > 0);
     lane.querySelector('.lv').textContent = x.votes;

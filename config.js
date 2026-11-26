@@ -19,13 +19,14 @@ window.AINEXT_CONFIG = {
   EVENT_NAME: "AI NEXT Bootcamp",
   SEASON_LABEL: "Season 2",
 
-  /* ---- Sessions (ชื่อ Speaker / Session ของ Season 2) ---- */
-  SESSION1_NAME: "Session 1 (เช้า)",
-  SESSION2_NAME: "Session 2 (บ่าย)",
+  /* ---- Speakers ---- */
+  SESSION1_NAME: "คุณหนุ่ย",     // Mission 1
+  SESSION2_NAME: "คุณบูม",       // Mission 2
 
-  /* ---- Team → Pitch Group (ต้องตรงกับ GROUP1_TEAMS / GROUP2_TEAMS ใน Code.gs) ---- */
-  G1: ['A', 'B', 'C', 'D', 'G', 'I', 'K'],
-  G2: ['E', 'F', 'H', 'J', 'L', 'M', 'N'],
+  /* ---- กลุ่ม (ต้องตรงกับ SEL_Group คอลัมน์ "กลุ่ม") — Group 1 โหวตได้เฉพาะ Group 1, Group 2 เฉพาะ Group 2 ---- */
+  G1: ['A1', 'A2', 'A3', 'A4', 'A5'],
+  G2: ['B1', 'B2', 'B3', 'B4', 'B5'],
+  /* Wi-Fi จริงอยู่ในชีทแท็บ App_Wifi (ไม่เก็บรหัสในโค้ดสาธารณะ) */
 
   /* ---- Polling (ms) — มี jitter สุ่มเพิ่มเพื่อกระจายโหลด ---- */
   HUB_POLL_MS: 7000,
