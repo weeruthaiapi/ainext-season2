@@ -10,7 +10,7 @@ window.AINEXT_CONFIG = {
 
   /* ---- Links (⚠️ ตอนนี้ยังเป็นลิงก์ Season 1 — เปลี่ยนเป็นกลุ่ม Season 2) ---- */
   OPENCHAT_URL_FALLBACK: "https://line.me/ti/g2/rjoazgqKFHS_5oK3khzSAKXecKsuZqP40sLAOg",
-  OPENCHAT_QR: "openchat-qr.jpg",
+  OPENCHAT_QR: "AIN2 Openchat.jpeg",
   LINE_MEETUP: "https://line.me/ti/g/srNQ_Rj82z",
 
   /* ---- Brand assets ---- */
