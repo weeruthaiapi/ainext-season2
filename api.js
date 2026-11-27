@@ -60,7 +60,7 @@
        ['TEST03', 'A4', 'TEST THREE', 'ทดสอบ สาม', 'Test3', '0800000003'], ['TEST04', 'B1', 'TEST FOUR', 'ทดสอบ สี่', 'Test4', '0800000004'],
        ['TEST05', 'B4', 'TEST FIVE', 'ทดสอบ ห้า', 'Test5', '0800000005'], ['TEST06', 'B5', 'TEST SIX', 'ทดสอบ หก', 'Test6', '0800000006'],
        ['TEST07', 'A2', 'TEST SEVEN', 'ทดสอบ เจ็ด', 'Test7', '0899990006'], ['TEST08', 'B2', 'TEST EIGHT', 'ทดสอบ แปด', 'Test8', '']
-      ].forEach(function (t, i) { roster.push(P(t[0], 'TEST/0' + (i + 1), t[3], t[2], t[4], t[1], t[5])); });
+      ].forEach(function (t, i) { roster.push(P(t[0], 'TEST/0' + (i + 1), t[3], t[3], t[4], t[1], t[5])); });   // ชื่อบน Cert = ชื่อไทย (สูตรคอลัมน์ D ใช้ชื่อ-นามสกุล เมื่อไม่พบใน Applicant Tracker)
       writeLS(LS_ROSTER, roster);
     }
     if (!readLS(LS_CONFIG)) writeLS(LS_CONFIG, { checkin_open: true, mission1_open: true, mission2_open: false, mission3_open: false, cert_open: false, admin_password: 'ainext2026', event_name: 'AI NEXT Season 2', openchat_url: C.OPENCHAT_URL_FALLBACK, wall_mode: 'checkin' });
