@@ -218,7 +218,7 @@ function cardsHtml(s){
     else { big = count + ' <small>/ ' + s.total + '</small>'; const miss = s.checkin - count; note = miss > 0 ? ('ขาด ' + miss + ' คน') : 'ครบแล้ว'; }
     return `<div class="card glass"><div class="k">${label}</div><div class="v">${big}</div><div class="sub" style="margin-top:8px">${note}</div></div>`;
   }
-  return `<div class="card glass"><div class="k">เช็คอินแล้ว</div><div class="v">${s.checkin} <small>/ ${s.total}</small></div><div class="sub" style="margin-top:8px">Check-out ${s.cannotAttend} · พี่เนียน ${s.mentors || 0} (ไม่นับ)</div></div>
+  return `<div class="card glass"><div class="k">เช็คอินแล้ว</div><div class="v">${s.checkin} <small>/ ${s.total}</small></div><div class="sub" style="margin-top:8px">Check-out ${s.cannotAttend} · รวมพี่เนียน ${s.mentors || 0} คน</div></div>
     <div class="card glass"><div class="k">เข้า OpenChat</div><div class="v">${s.openchat} <small>/ ${s.total}</small></div><div class="sub" style="margin-top:8px">โหวตแล้ว ${s.votes} คน</div></div>
     ${missionCard('Mission 1', s.m1, s.mission1_open)}${missionCard('Mission 2', s.m2, s.mission2_open)}${missionCard('Mission 3', s.m3, s.mission3_open)}
     <div class="card glass"><div class="k">ได้ Cert</div><div class="v">${s.cert} <small>/ ${s.total}</small></div><div class="sub" style="margin-top:8px">${s.cert_open ? 'ปล่อยแล้ว' : 'รอปล่อย'}</div></div>`;

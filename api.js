@@ -68,7 +68,7 @@
   }
 
   function voteOpts(group, ownTeam) { return (group === 1 ? C.G1 : group === 2 ? C.G2 : []).filter(function (t) { return t !== ownTeam; }); }
-  function counted(p) { return !p.isTest && !p.isMentor && !p.cannotAttend; }
+  function counted(p) { return !p.isTest && !p.cannotAttend; }   // นับพี่เนียนด้วย (ไม่นับในผลโหวต)
   function statusOf(p, cfg) {
     var parts = p.name.split(' ');
     return {
