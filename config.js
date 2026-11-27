@@ -11,7 +11,7 @@ window.AINEXT_CONFIG = {
   /* ---- Links (⚠️ ตอนนี้ยังเป็นลิงก์ Season 1 — เปลี่ยนเป็นกลุ่ม Season 2) ---- */
   OPENCHAT_URL_FALLBACK: "https://line.me/ti/g2/j7M6cBYWprZOlbwT59vF0NFG83opEzuV8s3gNw?utm_source=invitation&utm_medium=link_copy&utm_campaign=default",
   OPENCHAT_QR: "AIN2 Openchat.jpeg",
-  LINE_MEETUP: "https://line.me/ti/g/srNQ_Rj82z",
+  LINE_MEETUP: "",                                  // ปิดไว้ — ยังไม่เปิดกลุ่ม Meetup (ไม่มีลิงก์ในหน้าเว็บ)
 
   /* ---- Brand assets ---- */
   LOGO: "ainext-logo-bizcore.png",

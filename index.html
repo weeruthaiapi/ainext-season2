@@ -660,15 +660,13 @@ const FORMS = {
       { k: 'q14', t: 'text', optional: true, q: 'หากมีการจัด AI NEXT ครั้งถัดไป คุณอยากให้ใครมาเป็น Speaker และเพราะอะไร', hint: 'ระบุชื่อบุคคล หรือสายความเชี่ยวชาญก็ได้ เช่น AI for Business, AI Agent, Data, Marketing, HR, Finance หรือ Technology' }
     ] },
     { key: 'C', name: 'Part C', label: 'Meetup & Community',
-      intro: '<b>What is AI NEXT Meetup?</b><br>AI NEXT Meetup คือ Community ที่ต่อยอดหลังจบ Bootcamp — นัดเจอกันแบบสบาย ๆ เพื่ออัปเดตเครื่องมือ AI ใหม่ ๆ แชร์ Use Case จริงจากการทำงาน และ Networking กับคนสาย Marketing, Data และ Business ที่สนใจ AI เหมือนกัน<br><span style="opacity:.85">ตอนนี้อยู่ระหว่างวางแผน — คำตอบของคุณจะช่วยกำหนดรูปแบบงาน ลองตอบแบบ <b>"ถ้าสมมติว่ามีงานนี้…"</b> ได้เลย</span>',
+      intro: '<b>What is AI NEXT Meetup?</b><br>AI NEXT Meetup คือ Community ที่ต่อยอดหลังจบ Bootcamp — นัดเจอกันแบบสบาย ๆ เพื่ออัปเดตเครื่องมือ AI ใหม่ ๆ แชร์ Use Case จริงจากการทำงาน และ Networking กับคนสาย Marketing, Data และ Business ที่สนใจ AI เหมือนกัน<br><span style="opacity:.85">ยังไม่ได้ยืนยันว่าจะจัด — คำตอบของคุณจะช่วยทีมงานตัดสินใจและออกแบบงาน ลองตอบแบบ <b>"ถ้าสมมติว่ามีงานนี้…"</b> ได้เลย</span>',
       items: [
       { k: 'q15', t: 'radio', q: 'ถ้าสมมติว่ามีงาน AI NEXT Meetup หลังจบ Bootcamp คุณจะสนใจเข้าร่วมไหม', opts: ['สนใจมาก และจะเข้าร่วมแน่นอน', 'สนใจ แต่ขอดูรายละเอียดก่อน', 'อาจเข้าร่วม ขึ้นอยู่กับหัวข้อและวันเวลา', 'ยังไม่แน่ใจ', 'ไม่สนใจในขณะนี้'] },
       { k: 'q16', t: 'checkbox', optional: true, other: true, q: 'ถ้ามีงาน Meetup นี้ คุณอยากให้มีหัวข้อไหนบ้าง (เลือกได้หลายข้อ)', opts: ['AI Tools, Prompt และ Workflow ที่ใช้กับงานจริง', 'AI Product และ Business Case', 'AI for Career ตามสายอาชีพ เช่น Marketing, HR, Finance, Sales และ Technology', 'Networking และการแลกเปลี่ยนกับคนต่างสายอาชีพ', 'Career และโอกาสร่วมงาน'] },
       { k: 'q17', t: 'radio', q: 'ถ้ามีงาน Meetup นี้ คุณอยากมีส่วนร่วมแบบไหน', opts: ['เข้าร่วมฟังและ Networking', 'แชร์ Use Case แบบสั้น', 'ยังไม่แน่ใจ'] },
       { k: 'q18', t: 'text', optional: true, q: 'ถ้าได้ขึ้นแชร์ในงาน Meetup คุณมี Use Case หรือหัวข้อไหนที่อยากเล่าให้ Community ฟัง' },
-      { k: 'q19', t: 'checkbox', optional: true, q: 'ถ้ามีงาน Meetup นี้ ช่วงเวลาไหนที่คุณสะดวกมาร่วมมากที่สุด (เลือกได้หลายข้อ)', opts: ['วันธรรมดาหลังเลิกงาน', 'วันเสาร์', 'วันอาทิตย์'] },
-      { k: 'q20', t: 'radio', q: 'ถ้ามี LINE Group สำหรับ AI NEXT Meetup & Community คุณอยากเข้าร่วมไหม', noteHtml: 'เข้าร่วม LINE Group ได้ที่นี่: <a href="' + C.LINE_MEETUP + '" target="_blank" rel="noopener">คลิกเพื่อเข้ากลุ่ม ↗</a> — กลับมาคำตอบยังอยู่ครบ 💾', opts: ['เข้าร่วมแล้ว', 'อยากเข้าร่วม', 'ยังไม่เข้าร่วมตอนนี้'] },
-      { k: 'q21', t: 'radio', optional: true, q: 'ถ้าเข้ากลุ่มแล้ว ช่วยพิมพ์ชื่อเล่นและ Team Number แนะนำตัวในกลุ่ม เพื่อให้เพื่อน ๆ รู้จักนะ', opts: ['แนะนำตัวในกลุ่มแล้ว', 'จะเข้าไปแนะนำตัวภายหลัง', 'ไม่ได้เข้าร่วม LINE Group'] }
+      { k: 'q19', t: 'checkbox', optional: true, q: 'ถ้ามีงาน Meetup นี้ ช่วงเวลาไหนที่คุณสะดวกมาร่วมมากที่สุด (เลือกได้หลายข้อ)', opts: ['วันธรรมดาหลังเลิกงาน', 'วันเสาร์', 'วันอาทิตย์'] }
     ] }
   ] }
 };
@@ -867,11 +865,7 @@ function screenM3Done(){
     <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:12px">
       <div class="obsidian" style="padding:22px 26px;border-radius:26px"><div class="ring done" id="m3Ring" style="width:104px;height:104px;font-size:28px">${I.check}</div></div>
       <h2 class="t">Mission 3 สำเร็จแล้ว 🎉</h2>
-      <p class="desc" style="max-width:340px;margin-top:0">ขอบคุณที่ร่วมเดินทางกับ AI NEXT Season 2 ตลอดทั้งวัน 🚀<br>สนใจ AI NEXT Meetup &amp; Community เข้ากลุ่ม LINE ได้เลย</p>
-      <a class="btn-line" href="${C.LINE_MEETUP}" target="_blank" rel="noopener" style="max-width:340px">${I.chat} เข้ากลุ่ม AI NEXT Meetup</a>
-      <div class="glass" style="text-align:left;padding:14px 16px;max-width:340px;font-size:13px;line-height:1.8;color:var(--muted);border-radius:16px">
-        หลังเข้ากลุ่ม แนะนำตัวสั้น ๆ:<br>• ชื่อเล่น · Team Number<br>• สายงาน<br>• เรื่องที่อยากเรียนรู้หรือแชร์ใน Meetup
-      </div>
+      <p class="desc" style="max-width:340px;margin-top:0">ขอบคุณที่ร่วมเดินทางกับ AI NEXT Season 2 ตลอดทั้งวัน 🚀<br>ถ้ามีข่าว AI NEXT Meetup ทีมงานจะแจ้งในกลุ่ม OpenChat ของงาน</p>
     </div>
     <button class="btn-cta mt2" id="m3cert">${I.cert} ไปหน้า E-Certificate</button>
     <button class="btn-ghost mt" id="m3hub">กลับหน้า Passport</button>`, true);
@@ -1019,7 +1013,7 @@ function screenCert(){
   if (C.DEMO_MODE) AINEXT.seedDemo();
   const p = getProfile();
   if (!p) { go('landing', screenLanding); return; }
-  // กลับมาจากลิงก์ภายนอก (เช่น LINE Meetup ใน Q20) → พากลับไปที่ฟอร์มเดิมพร้อมร่าง
+  // กลับมาจากแอปอื่น / รีเฟรชหน้า ระหว่างทำ Mission → พากลับไปที่ฟอร์มเดิมพร้อมร่าง
   const resume = readLS(RESUME_KEY);
   if (resume && resume.mission) {
     screen = 'resume'; showLoading('กำลังพากลับไปที่ฟอร์มเดิม…');
