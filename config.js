@@ -5,7 +5,7 @@
  * ===================================================================== */
 window.AINEXT_CONFIG = {
   /* ---- Deployment ---- */
-  DEMO_MODE: true,                                  // หลัง Deploy Code.gs: ตั้ง false + วาง URL ด้านล่าง
+  DEMO_MODE: false,                                  // หลัง Deploy Code.gs: ตั้ง false + วาง URL ด้านล่าง
   API_BASE_URL: "https://script.google.com/macros/s/AKfycbyzXG_UTA9FAWE2vP-Z_DGYBAMF4zCq7fbLmht2WNEGgRyvqVMdpYdxuOuuvDDOinEG3Q/exec",      // URL ลงท้าย /exec จาก Apps Script
 
   /* ---- Links (⚠️ ตอนนี้ยังเป็นลิงก์ Season 1 — เปลี่ยนเป็นกลุ่ม Season 2) ---- */
