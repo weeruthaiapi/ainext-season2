@@ -6,10 +6,10 @@
 window.AINEXT_CONFIG = {
   /* ---- Deployment ---- */
   DEMO_MODE: true,                                  // หลัง Deploy Code.gs: ตั้ง false + วาง URL ด้านล่าง
-  API_BASE_URL: "PASTE_YOUR_WEB_APP_URL_HERE",      // URL ลงท้าย /exec จาก Apps Script
+  API_BASE_URL: "https://script.google.com/macros/s/AKfycbyzXG_UTA9FAWE2vP-Z_DGYBAMF4zCq7fbLmht2WNEGgRyvqVMdpYdxuOuuvDDOinEG3Q/exec",      // URL ลงท้าย /exec จาก Apps Script
 
   /* ---- Links (⚠️ ตอนนี้ยังเป็นลิงก์ Season 1 — เปลี่ยนเป็นกลุ่ม Season 2) ---- */
-  OPENCHAT_URL_FALLBACK: "https://line.me/ti/g2/rjoazgqKFHS_5oK3khzSAKXecKsuZqP40sLAOg",
+  OPENCHAT_URL_FALLBACK: "https://line.me/ti/g2/j7M6cBYWprZOlbwT59vF0NFG83opEzuV8s3gNw?utm_source=invitation&utm_medium=link_copy&utm_campaign=default",
   OPENCHAT_QR: "AIN2 Openchat.jpeg",
   LINE_MEETUP: "https://line.me/ti/g/srNQ_Rj82z",
 
