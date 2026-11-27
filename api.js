@@ -6,7 +6,7 @@
  * ===================================================================== */
 (function () {
   var C = window.AINEXT_CONFIG;
-  var LS_ROSTER = 'ainext2_roster_v4', LS_CONFIG = 'ainext2_config_v4', LS_RESULTS = 'ainext2_results_v4';
+  var LS_ROSTER = 'ainext2_roster_v5', LS_CONFIG = 'ainext2_config_v5', LS_RESULTS = 'ainext2_results_v5';
 
   /* ---------------- shared helpers ---------------- */
   function groupOf(t) { var s = String(t || '').toUpperCase().replace(/^TEAM\s*/, ''); return C.G1.indexOf(s) >= 0 ? 1 : (C.G2.indexOf(s) >= 0 ? 2 : 0); }
@@ -36,7 +36,7 @@
     if (!readLS(LS_ROSTER)) {
       var P = function (id, runNo, name, certName, nick, team, phone, extra) {
         var o = { no: id, runNo: runNo, name: name, certName: certName, nick: nick, team: team, phone: phone, called: false, joinedOpenChat: false, checkedIn: false, checkinAt: 0,
-          m1: false, m2: false, m3: false, cert: false, vote: '', cannotAttend: false, isTest: /^TEST/.test(id), isMentor: /^MENTOR/.test(id) };
+          m1: false, m2: false, m3: false, cert: false, vote: '', cannotAttend: false, isTest: /^TEST\d+$/.test(id), isMentor: /^MENTOR/.test(id) };
         for (var k in extra) o[k] = extra[k];
         return o;
       };
@@ -55,8 +55,12 @@
         roster.push(P('DEMO_' + (100 + i), T + '/' + (10 + i), 'สมาชิก ' + n + 'ทดลอง', 'DEMO MEMBER ' + (i + 1), n, T, '09' + String(20000000 + i * 7919).slice(0, 8),
           { checkedIn: r < 70, checkinAt: r < 70 ? Date.now() - (100 - i) * 60000 : 0, joinedOpenChat: r < 70, m1: r < 55, m2: r < 30 }));
       });
-      roster.push(P('TEST01', 'A1/T1', 'Test1 ผู้ทดสอบ', 'TEST ONE', 'Test1', 'A1', '0800000001'));
-      roster.push(P('TEST02', 'B1/T2', 'Test2 ผู้ทดสอบ', 'TEST TWO', 'Test2', 'B1', '0800000002'));
+      // ผู้ทดสอบ — ชุดเดียวกับแถว 85–92 ของ SEL_Group (ดู Guide_QA_Tester.html)
+      [['TEST01', 'A1', 'TEST ONE', 'ทดสอบ หนึ่ง', 'Test1', '0800000001'], ['TEST02', 'A3', 'TEST TWO', 'ทดสอบ สอง', 'Test2', '0800000002'],
+       ['TEST03', 'A4', 'TEST THREE', 'ทดสอบ สาม', 'Test3', '0800000003'], ['TEST04', 'B1', 'TEST FOUR', 'ทดสอบ สี่', 'Test4', '0800000004'],
+       ['TEST05', 'B4', 'TEST FIVE', 'ทดสอบ ห้า', 'Test5', '0800000005'], ['TEST06', 'B5', 'TEST SIX', 'ทดสอบ หก', 'Test6', '0800000006'],
+       ['TEST07', 'A2', 'TEST SEVEN', 'ทดสอบ เจ็ด', 'Test7', '0899990006'], ['TEST08', 'B2', 'TEST EIGHT', 'ทดสอบ แปด', 'Test8', '']
+      ].forEach(function (t, i) { roster.push(P(t[0], 'TEST/0' + (i + 1), t[3], t[2], t[4], t[1], t[5])); });
       writeLS(LS_ROSTER, roster);
     }
     if (!readLS(LS_CONFIG)) writeLS(LS_CONFIG, { checkin_open: true, mission1_open: true, mission2_open: false, mission3_open: false, cert_open: false, admin_password: 'ainext2026', event_name: 'AI NEXT Season 2', openchat_url: C.OPENCHAT_URL_FALLBACK, wall_mode: 'checkin' });
