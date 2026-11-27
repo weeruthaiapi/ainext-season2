@@ -88,7 +88,7 @@
 <div id="app"></div>
 <div class="toast" id="toast"></div>
 
-<script src="config.js"></script>
+<script>/* โหลด config.js ใหม่ทุกครั้ง (กัน cache 10 นาทีของ GitHub Pages) */document.write('<script src="config.js?t=' + Date.now() + '"><\/script>');</script>
 <script src="api.js"></script>
 <script>
 const C = window.AINEXT_CONFIG, { callApi, esc, jitterInterval, downloadCSV } = window.AINEXT;
